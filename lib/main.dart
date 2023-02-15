@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'constants/sizes.dart';
 import 'features/authentication/sign_up.dart';
 
 void main() {
@@ -25,6 +26,17 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         primaryColor: const Color(0xFFe9435A),
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: const AppBarTheme(
+          foregroundColor: Colors.black,
+          backgroundColor: Colors.white,
+          elevation: 0,
+          titleTextStyle: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: Sizes.size20,
+            color: Colors.black,
+          ),
+        ),
       ),
       home: const SignUpScreen(),
     );

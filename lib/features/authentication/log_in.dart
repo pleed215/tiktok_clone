@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/authentication/widgets/auth_button.dart';
 
 class LogInScreen extends StatelessWidget {
   const LogInScreen({Key? key}) : super(key: key);
@@ -14,9 +16,9 @@ class LogInScreen extends StatelessWidget {
             horizontal: Sizes.size40,
           ),
           child: Column(
-            children: const [
+            children: [
               Gaps.v80,
-              Text(
+              const Text(
                 "Log in to TikTok",
                 style: TextStyle(
                   fontSize: Sizes.size24,
@@ -24,7 +26,7 @@ class LogInScreen extends StatelessWidget {
                 ),
               ),
               Gaps.v20,
-              Text(
+              const Text(
                 "Manage your account, check notifications, comment on videos, and more.",
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -32,6 +34,31 @@ class LogInScreen extends StatelessWidget {
                   color: Colors.black45,
                 ),
               ),
+              Gaps.v40,
+              AuthButton(
+                icon: const FaIcon(FontAwesomeIcons.user),
+                text: "Use phone or email",
+                onTap: () {},
+              ),
+              Gaps.v16,
+              AuthButton(
+                icon: const FaIcon(FontAwesomeIcons.facebook),
+                text: "Continue with Facebook",
+                onTap: () {},
+              ),
+              Gaps.v16,
+              AuthButton(
+                icon: const FaIcon(FontAwesomeIcons.apple),
+                text: "Continue with Apple",
+                onTap: () {},
+              ),
+              Gaps.v16,
+              AuthButton(
+                icon: const FaIcon(FontAwesomeIcons.google),
+                onTap: () {},
+                text: "Continue with Google",
+              ),
+              Gaps.v16,
             ],
           ),
         ),

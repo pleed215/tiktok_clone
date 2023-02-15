@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/authentication/email_screen.dart';
 import 'package:tiktok_clone/features/authentication/widgets/auth_button.dart';
 
 import '../../constants/gaps.dart';
@@ -17,9 +19,9 @@ class SignUpScreen extends StatelessWidget {
             horizontal: Sizes.size40,
           ),
           child: Column(
-            children: const [
+            children: [
               Gaps.v80,
-              Text(
+              const Text(
                 "Sign up for TikTok",
                 style: TextStyle(
                   fontSize: Sizes.size24,
@@ -27,7 +29,7 @@ class SignUpScreen extends StatelessWidget {
                 ),
               ),
               Gaps.v20,
-              Text(
+              const Text(
                 "Create a profile, follow other accounts, make your own videos, and more.",
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -37,15 +39,38 @@ class SignUpScreen extends StatelessWidget {
               ),
               Gaps.v40,
               AuthButton(
+                icon: const FaIcon(FontAwesomeIcons.user),
                 text: "Use phone or email",
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const EmailScreen(),
+                  ));
+                },
               ),
-              Gaps.v20,
-              AuthButton(text: "Continue with Facebook"),
-              Gaps.v20,
-              AuthButton(text: "Continue with Apple"),
-              Gaps.v20,
-              AuthButton(text: "Continue with Google"),
-              Gaps.v20,
+              Gaps.v16,
+              AuthButton(
+                icon: const FaIcon(FontAwesomeIcons.facebook),
+                text: "Continue with Facebook",
+                onTap: () {},
+              ),
+              Gaps.v16,
+              AuthButton(
+                icon: const FaIcon(FontAwesomeIcons.apple),
+                text: "Continue with Apple",
+                onTap: () {},
+              ),
+              Gaps.v16,
+              AuthButton(
+                icon: const FaIcon(FontAwesomeIcons.google),
+                text: "Continue with Google",
+                onTap: () {},
+              ),
+              Gaps.v16,
+              const Center(
+                child: FaIcon(
+                  FontAwesomeIcons.chevronDown,
+                ),
+              )
             ],
           ),
         ),
