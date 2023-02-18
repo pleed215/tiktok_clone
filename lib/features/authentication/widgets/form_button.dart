@@ -4,11 +4,13 @@ import '../../../constants/sizes.dart';
 
 class FormButton extends StatelessWidget {
   final bool disabled;
+  final String text;
   GestureTapCallback? onTap;
 
   FormButton({
     super.key,
     required this.disabled,
+    this.text = "Next",
     this.onTap,
   });
 
@@ -33,8 +35,8 @@ class FormButton extends StatelessWidget {
               color: disabled ? Colors.grey.shade400 : Colors.white,
               fontWeight: FontWeight.w600,
             ),
-            child: const Text(
-              'Next',
+            child: Text(
+              text,
               textAlign: TextAlign.center,
             ),
           ),

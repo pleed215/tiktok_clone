@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tiktok_clone/features/onboarding/interests_screen.dart';
 
 import 'constants/sizes.dart';
-import 'features/authentication/sign_up.dart';
 
 void main() {
   runApp(const MyApp());
@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const SignUpScreen(),
+      home: const InterestsScreen(), //const SignUpScreen(),
     );
   }
 }
