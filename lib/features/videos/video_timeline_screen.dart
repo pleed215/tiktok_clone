@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:tiktok_clone/features/videos/widgets/video_post.dart';
 
 const colors = [
   Colors.red,
@@ -47,6 +48,19 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
   int _currentItemLength = 5;
   final _pageController = PageController();
 
+  final _scrollDuration = const Duration(milliseconds: 150);
+
+  void _onVideoPlayFinished() {
+    _pageController.nextPage(
+        duration: _scrollDuration, curve: Curves.bounceInOut);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return PageView.builder(
@@ -67,7 +81,7 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
         }
       },
       itemBuilder: (context, index) {
-        return hugeContainer[index];
+        return VideoPost(onVideoFinished: _onVideoPlayFinished);
       },
     );
   }
