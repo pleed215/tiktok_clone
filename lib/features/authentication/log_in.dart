@@ -71,31 +71,29 @@ class LogInScreen extends StatelessWidget {
       bottomNavigationBar: BottomAppBar(
         color: Colors.grey.shade100,
         elevation: 2,
-        child: Container(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: Sizes.size32),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text('Don\'t have an account?'),
-                Gaps.h5,
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    // Navigator.of(context).push(MaterialPageRoute(
-                    //   builder: (context) => const SignUpScreen(),
-                    // ));
-                  },
-                  child: Text(
-                    'Sign Up',
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                      fontWeight: FontWeight.w600,
-                    ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: Sizes.size32),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Don\'t have an account?'),
+              Gaps.h5,
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pop();
+                  // Navigator.of(context).push(MaterialPageRoute(
+                  //   builder: (context) => const SignUpScreen(),
+                  // ));
+                },
+                child: Text(
+                  'Sign Up',
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.w600,
                   ),
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           ),
         ),
       ),

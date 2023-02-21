@@ -5,9 +5,9 @@ import '../../../constants/sizes.dart';
 class FormButton extends StatelessWidget {
   final bool disabled;
   final String text;
-  GestureTapCallback? onTap;
+  final GestureTapCallback? onTap;
 
-  FormButton({
+  const FormButton({
     super.key,
     required this.disabled,
     this.text = "Next",

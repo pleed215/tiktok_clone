@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 
 import '../../constants/sizes.dart';
+import '../main_navigation/main_screen.dart';
 
 enum Direction { left, right }
 
@@ -115,7 +116,13 @@ class _TutorialScreenState extends State<TutorialScreen> {
               duration: const Duration(milliseconds: 300),
               opacity: _page == Page.second ? 1.0 : 0.0,
               child: CupertinoButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) => const MainScreen(),
+                      ),
+                      (route) => false);
+                },
                 color: Theme.of(context).primaryColor,
                 child: const Text("Enter the app!"),
               ),

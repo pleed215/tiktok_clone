@@ -15,7 +15,7 @@ class BirthdayScreen extends StatefulWidget {
 
 class _BirthdayScreenState extends State<BirthdayScreen> {
   final TextEditingController _birthdayController = TextEditingController();
-  DateTime _initialDate = DateTime.now();
+  final DateTime _initialDate = DateTime.now();
 
   @override
   void initState() {
@@ -89,15 +89,18 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
             FormButton(
               disabled: false,
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const InterestsScreen(),
-                ));
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => const InterestsScreen(),
+                  ),
+                  (route) => false,
+                );
               },
             ),
           ],
         ),
       ),
-      bottomNavigationBar: Container(
+      bottomNavigationBar: SizedBox(
         height: 300,
         child: CupertinoDatePicker(
           onDateTimeChanged: _onChangeDate,
