@@ -48,11 +48,11 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
   int _currentItemLength = 5;
   final _pageController = PageController();
 
-  final _scrollDuration = const Duration(milliseconds: 150);
+  final _scrollDuration = const Duration(milliseconds: 300);
 
   void _onVideoPlayFinished() {
     _pageController.nextPage(
-        duration: _scrollDuration, curve: Curves.bounceInOut);
+        duration: _scrollDuration, curve: Curves.easeInOut);
   }
 
   @override
@@ -81,7 +81,7 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
         }
       },
       itemBuilder: (context, index) {
-        return VideoPost(onVideoFinished: _onVideoPlayFinished);
+        return VideoPost(onVideoFinished: _onVideoPlayFinished, index: index);
       },
     );
   }
