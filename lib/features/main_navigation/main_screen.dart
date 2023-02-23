@@ -38,27 +38,29 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: _currentIndex == 0 ? Colors.black : Colors.white,
       body: Stack(
         children: [
           Offstage(
-            child: _screens[0],
             offstage: _currentIndex != 0,
+            child: _screens[0],
           ),
           Offstage(
-            child: _screens[1],
             offstage: _currentIndex != 1,
+            child: _screens[1],
           ),
           Offstage(
-            child: _screens[2],
             offstage: _currentIndex != 2,
+            child: _screens[2],
           ),
           Offstage(
-            child: _screens[3],
             offstage: _currentIndex != 3,
+            child: _screens[3],
           ),
           Offstage(
-            child: _screens[4],
             offstage: _currentIndex != 4,
+            child: _screens[4],
           ),
         ],
       ),
@@ -131,7 +133,7 @@ class _NavAddButtonState extends State<NavAddButton> {
           MaterialPageRoute(
             builder: (context) => Scaffold(
               appBar: AppBar(
-                title: Text('Video Records'),
+                title: const Text('Video Records'),
               ),
             ),
             fullscreenDialog: true,

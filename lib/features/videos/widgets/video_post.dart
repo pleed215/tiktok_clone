@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
+import 'package:tiktok_clone/features/videos/widgets/video_comment_modal.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
+
+import '../../../constants/gaps.dart';
 
 class VideoPost extends StatefulWidget {
   const VideoPost(
@@ -34,6 +38,7 @@ class _VideoPostState extends State<VideoPost>
   void _initVideoPlayer() async {
     await _videoPlayerController.initialize();
     setState(() {});
+    await _videoPlayerController.setLooping(true);
     _videoPlayerController.addListener(_onVideoChange);
   }
 
@@ -56,16 +61,27 @@ class _VideoPostState extends State<VideoPost>
     super.dispose();
   }
 
+  void _toggleVideoState() {
+    if (_isPlaying) {
+      _videoPlayerController.pause();
+      _animationController.reverse();
+    } else {
+      _videoPlayerController.play();
+      _animationController.forward();
+    }
+    setState(() {
+      _isPlaying = !_isPlaying;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return VisibilityDetector(
       onVisibilityChanged: (info) {
         if (info.visibleFraction == 1.0 &&
+            _isPlaying &&
             !_videoPlayerController.value.isPlaying) {
           _videoPlayerController.play();
-          setState(() {
-            _isPlaying = true;
-          });
         }
       },
       key: Key("${widget.index}"),
@@ -77,30 +93,21 @@ class _VideoPostState extends State<VideoPost>
                     color: Colors.teal,
                   )),
         Positioned.fill(
-          child: GestureDetector(onTap: () {
-            if (_videoPlayerController.value.isPlaying) {
-              _videoPlayerController.pause();
-              _isPlaying = false;
-              _animationController.reverse();
-            } else {
-              _videoPlayerController.play();
-              _animationController.forward();
-              _isPlaying = true;
-            }
-            setState(() {});
-          }),
+          child: GestureDetector(
+            onTap: _toggleVideoState,
+          ),
         ),
         Positioned.fill(
           child: IgnorePointer(
-            child: Center(
-              child: AnimatedBuilder(
-                animation: _animationController,
-                builder: (context, child) {
-                  return Transform.scale(
-                    scale: _animationController.value,
-                    child: child,
-                  );
-                },
+            child: AnimatedBuilder(
+              animation: _animationController,
+              builder: (context, child) {
+                return Transform.scale(
+                  scale: _animationController.value,
+                  child: child,
+                );
+              },
+              child: Center(
                 child: AnimatedOpacity(
                   opacity: _isPlaying ? 0 : 1.0,
                   duration: const Duration(milliseconds: 300),
@@ -113,8 +120,136 @@ class _VideoPostState extends State<VideoPost>
               ),
             ),
           ),
-        )
+        ),
+        Positioned(
+          bottom: 40,
+          left: 10,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              Text(
+                "@Hello",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: Sizes.size20,
+                ),
+              ),
+              Gaps.v20,
+              CollapsableText(
+                text:
+                    "This is my cat, Haru! She is really cute and horrible cat. Don't touch her, or she'll bite you.",
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          bottom: 80,
+          right: 10,
+          child: Column(
+            children: [
+              const CircleAvatar(
+                radius: 25,
+                foregroundImage: NetworkImage(
+                  'https://avatars.githubusercontent.com/u/101641035?v=4',
+                ),
+                child: Text('Haru'),
+              ),
+              Gaps.v24,
+              const VideoButton(
+                icon: FontAwesomeIcons.solidHeart,
+                text: "2.9M",
+              ),
+              Gaps.v24,
+              VideoButton(
+                icon: FontAwesomeIcons.solidComment,
+                text: "33K",
+                onTap: () {
+                  // if(_videoPlayerController.value.isPlaying) {
+                  // _toggleVideoState();
+                  // }
+                  _videoPlayerController
+                      .pause()
+                      .whenComplete(() => showModalBottomSheet(
+                            backgroundColor: Colors.transparent,
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (context) {
+                              return const VideoCommentModal();
+                            },
+                          ).whenComplete(() {
+                            if (_isPlaying) {
+                              _videoPlayerController.play();
+                            }
+                          }));
+                },
+              ),
+              Gaps.v24,
+              const VideoButton(
+                icon: FontAwesomeIcons.share,
+                text: "Share",
+              ),
+            ],
+          ),
+        ),
       ]),
+    );
+  }
+}
+
+class CollapsableText extends StatefulWidget {
+  final String text;
+  final int length;
+
+  const CollapsableText({super.key, required this.text, this.length = 20});
+
+  @override
+  State<CollapsableText> createState() => _CollapsableTextState();
+}
+
+class _CollapsableTextState extends State<CollapsableText> {
+  late bool _isOverLength;
+  bool _collapsed = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _isOverLength = widget.text.length > widget.length;
+  }
+
+  String makeText() {
+    if (_collapsed && _isOverLength) {
+      return '${widget.text.substring(0, 16)} ...';
+    } else {
+      return widget.text;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Text(
+          makeText(),
+          style: const TextStyle(
+            fontSize: Sizes.size16,
+            color: Colors.white,
+          ),
+        ),
+        Gaps.h4,
+        if (_isOverLength && _collapsed)
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                _collapsed = false;
+              });
+            },
+            child: const Text(
+              "See more",
+              style: TextStyle(color: Colors.white, fontSize: Sizes.size16),
+            ),
+          )
+      ],
     );
   }
 }

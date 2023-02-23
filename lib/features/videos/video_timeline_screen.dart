@@ -48,11 +48,9 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
   int _currentItemLength = 5;
   final _pageController = PageController();
 
-  final _scrollDuration = const Duration(milliseconds: 300);
-
   void _onVideoPlayFinished() {
-    _pageController.nextPage(
-        duration: _scrollDuration, curve: Curves.easeInOut);
+    // _pageController.nextPage(
+    //     duration: _scrollDuration, curve: Curves.easeInOut);
   }
 
   @override
@@ -61,28 +59,38 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
     super.dispose();
   }
 
+  Future<void> _onRefresh() {
+    return Future.delayed(const Duration(seconds: 3));
+  }
+
   @override
   Widget build(BuildContext context) {
-    return PageView.builder(
-      controller: _pageController,
-      scrollDirection: Axis.vertical,
-      itemCount: _currentItemLength,
-      onPageChanged: (value) {
-        if (_currentItemLength - value <= 2 && value % 5 == 3) {
-          print('$value, $_currentItemLength');
-          _pageController.animateTo(0,
-              duration: const Duration(
-                milliseconds: 1000,
-              ),
-              curve: Curves.linearToEaseOut);
-          setState(() {
-            _currentItemLength += 5;
-          });
-        }
-      },
-      itemBuilder: (context, index) {
-        return VideoPost(onVideoFinished: _onVideoPlayFinished, index: index);
-      },
+    return RefreshIndicator(
+      displacement: 50,
+      edgeOffset: 10,
+      backgroundColor: Colors.white.withOpacity(0.1),
+      color: Theme.of(context).primaryColor,
+      onRefresh: _onRefresh,
+      child: PageView.builder(
+        controller: _pageController,
+        scrollDirection: Axis.vertical,
+        itemCount: _currentItemLength,
+        onPageChanged: (value) {
+          if (_currentItemLength - value <= 2 && value % 5 == 3) {
+            _pageController.animateTo(0,
+                duration: const Duration(
+                  milliseconds: 1000,
+                ),
+                curve: Curves.linearToEaseOut);
+            setState(() {
+              _currentItemLength += 5;
+            });
+          }
+        },
+        itemBuilder: (context, index) {
+          return VideoPost(onVideoFinished: _onVideoPlayFinished, index: index);
+        },
+      ),
     );
   }
 }
