@@ -83,6 +83,10 @@ class _VideoPostState extends State<VideoPost>
             !_videoPlayerController.value.isPlaying) {
           _videoPlayerController.play();
         }
+        if (info.visibleFraction == 0.0 &&
+            _videoPlayerController.value.isPlaying) {
+          _toggleVideoState();
+        }
       },
       key: Key("${widget.index}"),
       child: Stack(children: [
@@ -246,7 +250,11 @@ class _CollapsableTextState extends State<CollapsableText> {
             },
             child: const Text(
               "See more",
-              style: TextStyle(color: Colors.white, fontSize: Sizes.size16),
+              maxLines: 3,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: Sizes.size16,
+                  fontWeight: FontWeight.bold),
             ),
           )
       ],

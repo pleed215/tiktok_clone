@@ -33,6 +33,7 @@ dependencies:
   font_awesome_flutter: ^10.4.0
   video_player: ^2.4.10
   visibility_detector: ^0.3.3
+  faker: ^2.1.0
   
   
   
@@ -65,6 +66,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/videos/sample.mov
+    - assets/images/placeholder.png
+    - assets/images/
     #   - images/a_dot_burr.jpeg
     #   - images/a_dot_ham.jpeg
 

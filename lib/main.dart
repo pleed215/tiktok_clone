@@ -26,6 +26,9 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         primaryColor: const Color(0xFFe9435A),
+        textSelectionTheme: const TextSelectionThemeData(
+          selectionColor: Color(0xFFe9435A),
+        ),
         scaffoldBackgroundColor: Colors.white,
         appBarTheme: const AppBarTheme(
           foregroundColor: Colors.black,

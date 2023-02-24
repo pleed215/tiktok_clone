@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/discover/discover_screen.dart';
 import 'package:tiktok_clone/features/videos/video_timeline_screen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -12,12 +13,10 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _currentIndex = 0;
+  int _currentIndex = 1;
   final _screens = const [
     VideoTimelineScreen(),
-    Center(
-      child: Text('Discover'),
-    ),
+    DiscoverScreen(),
     Center(
       child: Text('add'),
     ),
@@ -65,7 +64,7 @@ class _MainScreenState extends State<MainScreen> {
         ],
       ),
       bottomNavigationBar: BottomAppBar(
-          color: Colors.black,
+          color: _currentIndex == 0 ? Colors.black : Colors.white,
           padding: const EdgeInsets.symmetric(
             vertical: Sizes.size8,
             horizontal: Sizes.size16,
@@ -79,6 +78,7 @@ class _MainScreenState extends State<MainScreen> {
                 text: "Home",
                 isSelected: _currentIndex == 0,
                 onTap: () => _onTap(0),
+                currentIndex: _currentIndex,
               ),
               NavTab(
                 icon: FontAwesomeIcons.compass,
@@ -86,9 +86,12 @@ class _MainScreenState extends State<MainScreen> {
                 text: "Discover",
                 isSelected: _currentIndex == 1,
                 onTap: () => _onTap(1),
+                currentIndex: _currentIndex,
               ),
               Gaps.h10,
-              const NavAddButton(),
+              NavAddButton(
+                inverted: _currentIndex != 0,
+              ),
               Gaps.h10,
               NavTab(
                 icon: FontAwesomeIcons.message,
@@ -96,6 +99,7 @@ class _MainScreenState extends State<MainScreen> {
                 text: "Inbox",
                 isSelected: _currentIndex == 3,
                 onTap: () => _onTap(3),
+                currentIndex: _currentIndex,
               ),
               NavTab(
                 icon: FontAwesomeIcons.user,
@@ -103,6 +107,7 @@ class _MainScreenState extends State<MainScreen> {
                 text: "Profile",
                 isSelected: _currentIndex == 4,
                 onTap: () => _onTap(4),
+                currentIndex: _currentIndex,
               ),
             ],
           )),
@@ -113,7 +118,10 @@ class _MainScreenState extends State<MainScreen> {
 class NavAddButton extends StatefulWidget {
   const NavAddButton({
     super.key,
+    required this.inverted,
   });
+
+  final bool inverted;
 
   @override
   State<NavAddButton> createState() => _NavAddButtonState();
@@ -132,6 +140,7 @@ class _NavAddButtonState extends State<NavAddButton> {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => Scaffold(
+              backgroundColor: widget.inverted ? Colors.black : Colors.white,
               appBar: AppBar(
                 title: const Text('Video Records'),
               ),
@@ -179,11 +188,12 @@ class _NavAddButtonState extends State<NavAddButton> {
                 height: 35,
                 width: 45,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: widget.inverted ? Colors.black : Colors.white,
                   borderRadius: BorderRadius.circular(Sizes.size8),
                 ),
-                child: const Center(
-                  child: FaIcon(FontAwesomeIcons.plus, color: Colors.black),
+                child: Center(
+                  child: FaIcon(FontAwesomeIcons.plus,
+                      color: widget.inverted ? Colors.white : Colors.black),
                 )),
           ],
         ),
@@ -200,6 +210,7 @@ class NavTab extends StatefulWidget {
     required this.icon,
     required this.onTap,
     required this.selectedIcon,
+    required this.currentIndex,
   });
 
   final String? text;
@@ -207,6 +218,7 @@ class NavTab extends StatefulWidget {
   final IconData icon;
   final GestureTapCallback onTap;
   final IconData selectedIcon;
+  final int currentIndex;
 
   @override
   State<NavTab> createState() => _NavTabState();
@@ -224,19 +236,23 @@ class _NavTabState extends State<NavTab> {
         child: GestureDetector(
           onTap: widget.onTap,
           child: Container(
-            decoration: const BoxDecoration(color: Colors.black),
+            decoration: BoxDecoration(
+              color: widget.currentIndex == 0 ? Colors.black : Colors.white,
+            ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 FaIcon(
                   widget.isSelected ? widget.selectedIcon : widget.icon,
-                  color: Colors.white,
+                  color: widget.currentIndex == 0 ? Colors.white : Colors.black,
                 ),
                 Gaps.v5,
                 if (widget.text != null)
                   Text(widget.text!,
-                      style: const TextStyle(
-                        color: Colors.white,
+                      style: TextStyle(
+                        color: widget.currentIndex == 0
+                            ? Colors.white
+                            : Colors.black,
                       )),
               ],
             ),
