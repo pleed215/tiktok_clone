@@ -22,14 +22,14 @@ String makeEllipsis(String text, {int maxLength = 10}) {
 }
 
 class DiscoverScreen extends StatefulWidget {
-  const DiscoverScreen({Key? key}) : super(key: key);
+  DiscoverScreen({Key? key}) : super(key: key);
+  final _faker = Faker();
 
   @override
   State<DiscoverScreen> createState() => _DiscoverScreenState();
 }
 
 class _DiscoverScreenState extends State<DiscoverScreen> {
-  final _faker = Faker();
   final _textEditingController = TextEditingController(text: "Hello");
   bool _isDirty = true;
 
@@ -186,11 +186,11 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              _faker.lorem.sentences(3).join(),
+                            const Text(
+                              "Stella de altus lanista, locus abaculus! Warp tightly like a colorful transformator. One must emerge the saint in order to gain the aspect of sincere control.",
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: Sizes.size16,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -198,16 +198,16 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                             Gaps.v4,
                             Row(
                               children: [
-                                CircleAvatar(
+                                const CircleAvatar(
                                   radius: 12,
                                   backgroundImage: NetworkImage(
-                                    _faker.image.image(),
+                                    "https://avatars.githubusercontent.com/u/101641035?v=4",
                                   ),
                                 ),
                                 Gaps.h4,
                                 Expanded(
                                   child: Text(
-                                    _faker.person.name(),
+                                    "Long Person Name",
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(

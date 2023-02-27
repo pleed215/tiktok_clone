@@ -26,6 +26,9 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         primaryColor: const Color(0xFFe9435A),
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        splashFactory: NoSplash.splashFactory,
         textSelectionTheme: const TextSelectionThemeData(
           selectionColor: Color(0xFFe9435A),
         ),
