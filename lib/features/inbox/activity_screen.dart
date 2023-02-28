@@ -4,6 +4,7 @@ import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/features/inbox/widgets/activity_menu.dart';
 
 import '../../constants/sizes.dart';
+import 'direct_message_screen.dart';
 
 List<ActivityMenu> activityMenus = [
   ActivityMenu(
@@ -64,6 +65,12 @@ class _ActivityScreenState extends State<ActivityScreen>
     });
   }
 
+  void _onTapDm(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => const DirectMessageScreen(),
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,6 +79,7 @@ class _ActivityScreenState extends State<ActivityScreen>
           onTap: _onToggleAnimation,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const Text(
@@ -95,7 +103,7 @@ class _ActivityScreenState extends State<ActivityScreen>
         actions: [
           IconButton(
             splashRadius: 0.1,
-            onPressed: () {},
+            onPressed: () => _onTapDm(context),
             icon: const FaIcon(FontAwesomeIcons.paperPlane),
           ),
         ],
