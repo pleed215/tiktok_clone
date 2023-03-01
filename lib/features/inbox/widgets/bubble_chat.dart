@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../constants/sizes.dart';
+
 class BubbleShape extends CustomPainter {
   final Color color;
 
@@ -29,5 +31,71 @@ class BubbleShape extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return true;
+  }
+}
+
+class BubbleChat extends StatefulWidget {
+  const BubbleChat({Key? key, required this.textEditingController})
+      : super(key: key);
+
+  final TextEditingController textEditingController;
+
+  @override
+  State<BubbleChat> createState() => _BubbleChatState();
+}
+
+class _BubbleChatState extends State<BubbleChat> {
+  final _scrollController = ScrollController();
+
+  void _onChange() {
+    _scrollController.jumpTo(
+      _scrollController.position.maxScrollExtent,
+    );
+  }
+
+  @override
+  void initState() {
+    widget.textEditingController.addListener(_onChange);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onChange);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Stack(
+        children: [
+          CustomPaint(
+            painter: const BubbleShape(color: Colors.white),
+            child: Container(height: 60.0),
+          ),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: Sizes.size10,
+              ),
+              child: SizedBox(
+                height: 45.0,
+                child: TextField(
+                  controller: widget.textEditingController,
+                  minLines: null,
+                  maxLines: null,
+                  expands: true,
+                  scrollController: _scrollController,
+                  decoration: const InputDecoration(
+                      border: InputBorder.none, hintText: "Send a message..."),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
