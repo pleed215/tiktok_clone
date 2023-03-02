@@ -4,6 +4,7 @@ import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/discover/discover_screen.dart';
 import 'package:tiktok_clone/features/inbox/inbox_screen.dart';
+import 'package:tiktok_clone/features/user/user_profile_screen.dart';
 import 'package:tiktok_clone/features/videos/video_timeline_screen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -14,7 +15,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _currentIndex = 3;
+  int _currentIndex = 4;
   final _screens = [
     const VideoTimelineScreen(),
     DiscoverScreen(),
@@ -22,9 +23,7 @@ class _MainScreenState extends State<MainScreen> {
       child: Text('add'),
     ),
     const InboxScreen(),
-    const Center(
-      child: Text('profile'),
-    ),
+    const UserProfileScreen(),
   ];
 
   void _onTap(int index) {
