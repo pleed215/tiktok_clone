@@ -8,7 +8,7 @@ class ChatMessage {
   late final bool isEmoji;
 
   ChatMessage(this.message, this.isMine) {
-    final isWord = RegExp(r"\w+|\d+|\s+|['-*/!@#$%^&]");
+    final isWord = RegExp(r"\w+|\d+|\s+|['-*/!@#$%^&]|[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]");
     isEmoji = !isWord.hasMatch(message);
   }
 }
@@ -32,6 +32,9 @@ class ChatWidget extends StatelessWidget {
               )),
         if (!message.isEmoji)
           Container(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width - Sizes.size32,
+            ),
             decoration: BoxDecoration(
               color: message.isMine ? Colors.cyan : Colors.purple,
               borderRadius: BorderRadius.only(
@@ -56,6 +59,7 @@ class ChatWidget extends StatelessWidget {
               ),
               child: Text(
                 message.message,
+                maxLines: 10,
                 style: const TextStyle(
                   fontSize: Sizes.size20,
                   color: Colors.white,
