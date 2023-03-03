@@ -43,7 +43,6 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void _addItem() {
     if (_isDirty) {
-      print(_textEditingController.text);
       setState(() {
         _hardCodingChats
             .add(ChatMessage(_textEditingController.text.trim(), true));

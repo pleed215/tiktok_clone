@@ -20,13 +20,11 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
   void _onSubmit(BuildContext context) {
     if (_formKey.currentState != null && _formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      print(data);
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
           builder: (context) => const InterestsScreen(),
         ),
         (route) {
-          print(route);
           return false;
         },
       );

@@ -1,4 +1,3 @@
-import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
@@ -22,8 +21,7 @@ String makeEllipsis(String text, {int maxLength = 10}) {
 }
 
 class DiscoverScreen extends StatefulWidget {
-  DiscoverScreen({Key? key}) : super(key: key);
-  final _faker = Faker();
+  const DiscoverScreen({Key? key}) : super(key: key);
 
   @override
   State<DiscoverScreen> createState() => _DiscoverScreenState();
@@ -32,10 +30,6 @@ class DiscoverScreen extends StatefulWidget {
 class _DiscoverScreenState extends State<DiscoverScreen> {
   final _textEditingController = TextEditingController(text: "Hello");
   bool _isDirty = true;
-
-  void _onChanged(String value) {}
-
-  void _onSubmitted(String value) {}
 
   void _dismissKeyboard(BuildContext context) {
     FocusScope.of(context).unfocus();

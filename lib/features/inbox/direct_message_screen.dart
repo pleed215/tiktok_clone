@@ -12,7 +12,7 @@ class DirectMessageScreen extends StatefulWidget {
 
 class _DirectMessageScreenState extends State<DirectMessageScreen> {
   final _key = GlobalKey<AnimatedListState>();
-  final _duration = Duration(milliseconds: 300);
+  final _duration = const Duration(milliseconds: 300);
 
   void _addItem() {
     if (_key.currentState != null) {

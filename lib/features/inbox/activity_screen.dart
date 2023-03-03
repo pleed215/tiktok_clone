@@ -130,10 +130,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                 Dismissible(
                   key: Key("$item Key"),
                   onDismissed: (direction) {
-                    print(
-                        "${direction.name} and ${direction.index}, print ${item} jot");
                     final index = _notifications.indexOf(item);
-                    print(index);
                     _notifications.removeAt(index);
                     setState(() {});
                   },

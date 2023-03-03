@@ -18,7 +18,7 @@ class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 4;
   final _screens = [
     const VideoTimelineScreen(),
-    DiscoverScreen(),
+    const DiscoverScreen(),
     const Center(
       child: Text('add'),
     ),
