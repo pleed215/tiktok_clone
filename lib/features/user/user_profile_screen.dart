@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/user/widgets/follow_info.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({Key? key}) : super(key: key);
@@ -64,58 +65,39 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 ],
               ),
               Gaps.v24,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Column(
-                    children: [
-                      const Text("97",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: Sizes.size16,
-                          )),
-                      Gaps.v5,
-                      Text(
-                        "Following",
-                        style: TextStyle(
-                          color: Colors.grey.shade500,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      const Text("97",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: Sizes.size16,
-                          )),
-                      Gaps.v5,
-                      Text(
-                        "Following",
-                        style: TextStyle(
-                          color: Colors.grey.shade500,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      const Text("97",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: Sizes.size16,
-                          )),
-                      Gaps.v5,
-                      Text(
-                        "Following",
-                        style: TextStyle(
-                          color: Colors.grey.shade500,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+              SizedBox(
+                height: Sizes.size40,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const FollowInfo(
+                      num: 4300,
+                      type: FollowInfoTypeEnum.follower,
+                    ),
+                    VerticalDivider(
+                      color: Colors.grey.shade500,
+                      width: 30.0,
+                      thickness: 1.0,
+                      indent: 10.0,
+                      endIndent: 10.0,
+                    ),
+                    const FollowInfo(
+                      num: 43000,
+                      type: FollowInfoTypeEnum.following,
+                    ),
+                    VerticalDivider(
+                      color: Colors.grey.shade500,
+                      width: 30.0,
+                      thickness: 1.0,
+                      indent: 10.0,
+                      endIndent: 10.0,
+                    ),
+                    const FollowInfo(
+                      num: 4400000,
+                      type: FollowInfoTypeEnum.like,
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
