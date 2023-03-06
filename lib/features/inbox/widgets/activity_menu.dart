@@ -8,9 +8,10 @@ class ActivityMenu extends StatelessWidget {
   final IconData icon;
   final String menu;
   final Function()? onTap;
-  bool check = false;
+  final bool check;
 
-  ActivityMenu(this.icon, this.menu, {Key? key, this.onTap, this.check = false})
+  const ActivityMenu(this.icon, this.menu,
+      {Key? key, this.onTap, this.check = false})
       : super(key: key);
 
   @override

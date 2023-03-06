@@ -7,15 +7,15 @@ import '../../constants/sizes.dart';
 import 'direct_message_screen.dart';
 
 List<ActivityMenu> activityMenus = [
-  ActivityMenu(
+  const ActivityMenu(
     FontAwesomeIcons.solidCommentDots,
     "All activity",
   ),
-  ActivityMenu(FontAwesomeIcons.solidHeart, "Likes"),
-  ActivityMenu(FontAwesomeIcons.commentDots, "Comments"),
-  ActivityMenu(FontAwesomeIcons.at, "Mentions"),
-  ActivityMenu(FontAwesomeIcons.solidUser, "Followers"),
-  ActivityMenu(FontAwesomeIcons.tiktok, "From TikTok"),
+  const ActivityMenu(FontAwesomeIcons.solidHeart, "Likes"),
+  const ActivityMenu(FontAwesomeIcons.commentDots, "Comments"),
+  const ActivityMenu(FontAwesomeIcons.at, "Mentions"),
+  const ActivityMenu(FontAwesomeIcons.solidUser, "Followers"),
+  const ActivityMenu(FontAwesomeIcons.tiktok, "From TikTok"),
 ];
 
 class ActivityScreen extends StatefulWidget {
