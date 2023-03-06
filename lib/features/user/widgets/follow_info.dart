@@ -11,15 +11,14 @@ enum FollowInfoTypeEnum {
 }
 
 extension FollowInfoType on FollowInfoTypeEnum {
-
   String get info {
     switch (this) {
       case FollowInfoTypeEnum.follower:
-        return 'Followers';
+        return 'Follower';
       case FollowInfoTypeEnum.following:
-        return 'Followings';
+        return 'Following';
       default:
-        return 'Likes';
+        return 'Like';
     }
   }
 }
@@ -28,7 +27,8 @@ class FollowInfo extends StatelessWidget {
   final FollowInfoTypeEnum type;
   final int num;
 
-  const FollowInfo({Key? key, required this.num, required this.type}) : super(key: key);
+  const FollowInfo({Key? key, required this.num, required this.type})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class FollowInfo extends StatelessWidget {
             )),
         Gaps.v5,
         Text(
-          type.info,
+          "${type.info}${num > 1 && type != FollowInfoTypeEnum.follower ? 's' : ''}",
           style: TextStyle(
             color: Colors.grey.shade500,
           ),
