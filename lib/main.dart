@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:tiktok_clone/features/main_navigation/main_screen.dart';
+import 'package:flutter/services.dart';
+import 'package:tiktok_clone/features/authentication/sign_up.dart';
 
 import 'constants/sizes.dart';
+import 'features/main_navigation/main_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
   runApp(const MyApp());
 }
 
@@ -15,6 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: true,
       theme: ThemeData(
         // This is the theme of your application.
         //

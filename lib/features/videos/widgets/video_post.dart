@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
@@ -25,6 +26,7 @@ class _VideoPostState extends State<VideoPost>
       VideoPlayerController.asset("assets/videos/sample.mov");
   bool _isPlaying = true;
   late final AnimationController _animationController;
+  bool _isMuted = false;
 
   void _onVideoChange() {
     if (_videoPlayerController.value.isInitialized) {
@@ -35,8 +37,21 @@ class _VideoPostState extends State<VideoPost>
     }
   }
 
+  void _toggleVolume() {
+    _videoPlayerController.setVolume(_isMuted ? 0.8 : 0.0);
+    setState(() {
+      _isMuted = !_isMuted;
+    });
+  }
+
   void _initVideoPlayer() async {
     await _videoPlayerController.initialize();
+    if (kIsWeb) {
+      await _videoPlayerController.setVolume(0);
+      setState(() {
+        _isMuted = true;
+      });
+    }
     setState(() {});
     await _videoPlayerController.setLooping(true);
     _videoPlayerController.addListener(_onVideoChange);
@@ -99,6 +114,19 @@ class _VideoPostState extends State<VideoPost>
         Positioned.fill(
           child: GestureDetector(
             onTap: _toggleVideoState,
+          ),
+        ),
+        Positioned(
+          top: Sizes.size52,
+          right: Sizes.size10,
+          child: GestureDetector(
+            onTap: _toggleVolume,
+            child: FaIcon(
+              _isMuted
+                  ? FontAwesomeIcons.volumeXmark
+                  : FontAwesomeIcons.volumeHigh,
+              color: Colors.white,
+            ),
           ),
         ),
         Positioned.fill(
