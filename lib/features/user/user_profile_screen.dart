@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/settings/setting_screen.dart';
 import 'package:tiktok_clone/features/user/widgets/follow_info.dart';
 import 'package:tiktok_clone/features/user/widgets/persistent_tab_bar.dart';
 import 'package:tiktok_clone/features/user/widgets/profile_grid_item.dart';
@@ -19,6 +20,12 @@ class UserProfileScreen extends StatefulWidget {
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
   final int views = (myRandom.nextDouble() * 1000000).toInt();
+
+  void _onTapGear(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => const SettingScreen(),
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,17 +43,22 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 ),
                 actions: [
                   IconButton(
-                    onPressed: () {},
-                    icon: const FaIcon(
-                      FontAwesomeIcons.bell,
-                      size: Sizes.size20,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const FaIcon(FontAwesomeIcons.ellipsis,
-                        size: Sizes.size20),
-                  ),
+                    onPressed: () => _onTapGear(context),
+                    icon:
+                        const FaIcon(FontAwesomeIcons.gear, size: Sizes.size20),
+                  )
+                  // IconButton(
+                  //   onPressed: () {},
+                  //   icon: const FaIcon(
+                  //     FontAwesomeIcons.bell,
+                  //     size: Sizes.size20,
+                  //   ),
+                  // ),
+                  // IconButton(
+                  //   onPressed: () {},
+                  //   icon: const FaIcon(FontAwesomeIcons.ellipsis,
+                  //       size: Sizes.size20),
+                  // ),
                 ],
               ),
               SliverToBoxAdapter(
