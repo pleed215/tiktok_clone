@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/constants/breakpoints.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 
 import '../../constants/gaps.dart';
@@ -43,6 +44,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(MediaQuery.of(context));
     return DefaultTabController(
       length: tabText.length,
       child: GestureDetector(
@@ -59,54 +61,60 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
             ),
             title: SizedBox(
               height: Sizes.size40,
-              child: TextField(
-                controller: _textEditingController,
-                onChanged: (String value) {
-                  setState(() {
-                    _isDirty = value.isNotEmpty;
-                  });
-                },
-                cursorColor: Theme.of(context).primaryColor,
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.zero,
-                  filled: true,
-                  fillColor: Colors.grey.shade200,
-                  prefixIconColor: Colors.black,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(
-                      Sizes.size4,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxWidth: 400,
+                ),
+                child: TextField(
+                  controller: _textEditingController,
+                  onChanged: (String value) {
+                    setState(() {
+                      _isDirty = value.isNotEmpty;
+                    });
+                  },
+                  cursorColor: Theme.of(context).primaryColor,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.zero,
+                    filled: true,
+                    fillColor: Colors.grey.shade200,
+                    prefixIconColor: Colors.black,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(
+                        Sizes.size4,
+                      ),
+                      borderSide: BorderSide.none,
                     ),
-                    borderSide: BorderSide.none,
+                    prefixIcon: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Sizes.size8,
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: const [
+                          FaIcon(
+                            FontAwesomeIcons.magnifyingGlass,
+                            size: Sizes.size16,
+                          ),
+                        ],
+                      ),
+                    ),
+                    prefixIconConstraints:
+                        BoxConstraints.tight(const Size(35.0, 20.0)),
+                    suffixIcon: _isDirty
+                        ? IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _isDirty = false;
+                              });
+                              _textEditingController.clear();
+                            },
+                            splashRadius: 0.1,
+                            icon: FaIcon(FontAwesomeIcons.solidCircleXmark,
+                                color: Colors.grey.shade600,
+                                size: Sizes.size16),
+                          )
+                        : null,
                   ),
-                  prefixIcon: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: Sizes.size8,
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        FaIcon(
-                          FontAwesomeIcons.magnifyingGlass,
-                          size: Sizes.size16,
-                        ),
-                      ],
-                    ),
-                  ),
-                  prefixIconConstraints:
-                      BoxConstraints.tight(const Size(35.0, 20.0)),
-                  suffixIcon: _isDirty
-                      ? IconButton(
-                          onPressed: () {
-                            setState(() {
-                              _isDirty = false;
-                            });
-                            _textEditingController.clear();
-                          },
-                          splashRadius: 0.1,
-                          icon: FaIcon(FontAwesomeIcons.solidCircleXmark,
-                              color: Colors.grey.shade600, size: Sizes.size16),
-                        )
-                      : null,
                 ),
               ),
             ),
@@ -149,92 +157,99 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                 itemCount: 20,
                 keyboardDismissBehavior:
                     ScrollViewKeyboardDismissBehavior.onDrag,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount:
+                      MediaQuery.of(context).size.width > Breakpoints.lg
+                          ? 5
+                          : 2,
                   crossAxisSpacing: Sizes.size4,
                   mainAxisSpacing: Sizes.size12,
                   childAspectRatio: 9 / 16,
                 ),
                 itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      Container(
-                        clipBehavior: Clip.hardEdge,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(Sizes.size4),
-                        ),
-                        child: AspectRatio(
-                          aspectRatio: 0.8,
-                          child: FadeInImage.assetNetwork(
-                            fit: BoxFit.cover,
-                            placeholderFit: BoxFit.fitHeight,
-                            placeholder: 'assets/images/placeholder.png',
-                            image:
-                                'https://images.unsplash.com/photo-1544717304-a2db4a7b16ee?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1588&q=80',
+                  return LayoutBuilder(
+                    builder: (context, constraints) => Column(
+                      children: [
+                        Container(
+                          clipBehavior: Clip.hardEdge,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(Sizes.size4),
+                          ),
+                          child: AspectRatio(
+                            aspectRatio: 0.8,
+                            child: FadeInImage.assetNetwork(
+                              fit: BoxFit.cover,
+                              placeholderFit: BoxFit.fitHeight,
+                              placeholder: 'assets/images/placeholder.png',
+                              image:
+                                  'https://images.unsplash.com/photo-1544717304-a2db4a7b16ee?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1588&q=80',
+                            ),
                           ),
                         ),
-                      ),
-                      Gaps.v10,
-                      Flexible(
-                        flex: 1,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "Stella de altus lanista, locus abaculus! Warp tightly like a colorful transformator. One must emerge the saint in order to gain the aspect of sincere control.",
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: Sizes.size16,
-                                fontWeight: FontWeight.bold,
+                        Gaps.v10,
+                        Flexible(
+                          flex: 1,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Stella de altus lanista, locus abaculus! Warp tightly like a colorful transformator. One must emerge the saint in order to gain the aspect of sincere control.",
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: Sizes.size16,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            Gaps.v4,
-                            Row(
-                              children: [
-                                const CircleAvatar(
-                                  radius: 12,
-                                  backgroundImage: NetworkImage(
-                                    "https://avatars.githubusercontent.com/u/101641035?v=4",
-                                  ),
-                                ),
-                                Gaps.h4,
-                                Expanded(
-                                  child: Text(
-                                    "Long Person Name",
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: Sizes.size16,
-                                      color: Colors.grey.shade500,
-                                    ),
-                                  ),
-                                ),
-                                Gaps.h3,
+                              Gaps.v4,
+                              if (constraints.maxWidth < 200 ||
+                                  constraints.maxWidth > 250)
                                 Row(
                                   children: [
-                                    FaIcon(
-                                      FontAwesomeIcons.heart,
-                                      color: Colors.grey.shade500,
-                                      size: Sizes.size16,
+                                    const CircleAvatar(
+                                      radius: 12,
+                                      backgroundImage: NetworkImage(
+                                        "https://avatars.githubusercontent.com/u/101641035?v=4",
+                                      ),
+                                    ),
+                                    Gaps.h4,
+                                    Expanded(
+                                      child: Text(
+                                        "Long Person Name",
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: Sizes.size16,
+                                          color: Colors.grey.shade500,
+                                        ),
+                                      ),
                                     ),
                                     Gaps.h3,
-                                    Text(
-                                      '3.3M',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: Sizes.size12,
-                                        color: Colors.grey.shade500,
-                                      ),
+                                    Row(
+                                      children: [
+                                        FaIcon(
+                                          FontAwesomeIcons.heart,
+                                          color: Colors.grey.shade500,
+                                          size: Sizes.size16,
+                                        ),
+                                        Gaps.h3,
+                                        Text(
+                                          '3.3M',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: Sizes.size12,
+                                            color: Colors.grey.shade500,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
-                              ],
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   );
                 },
               ),
