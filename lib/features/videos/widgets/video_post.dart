@@ -206,6 +206,7 @@ class _VideoPostState extends State<VideoPost>
                             backgroundColor: Colors.transparent,
                             isScrollControlled: true,
                             context: context,
+                            constraints: const BoxConstraints(maxWidth: 500),
                             builder: (context) {
                               return const VideoCommentModal();
                             },
