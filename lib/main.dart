@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tiktok_clone/features/main_navigation/main_screen.dart';
 
 import 'constants/sizes.dart';
-import 'features/authentication/sign_up.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,11 +31,20 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
+        textTheme: Typography.blackCupertino,
         brightness: Brightness.light,
         primaryColor: const Color(0xFFe9435A),
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         splashFactory: NoSplash.splashFactory,
+        bottomAppBarTheme: BottomAppBarTheme(
+          color: Colors.grey.shade100,
+        ),
+        tabBarTheme: TabBarTheme(
+          labelColor: Colors.black,
+          unselectedLabelColor: Colors.grey.shade500,
+          indicatorColor: Colors.black,
+        ),
         textSelectionTheme: const TextSelectionThemeData(
           selectionColor: Color(0xFFe9435A),
         ),
@@ -52,11 +61,26 @@ class MyApp extends StatelessWidget {
         ),
       ),
       darkTheme: ThemeData(
+        appBarTheme: AppBarTheme(
+          color: Colors.grey.shade900,
+        ),
         brightness: Brightness.dark,
+        textSelectionTheme: const TextSelectionThemeData(
+          selectionColor: Color(0xFFe9435A),
+        ),
+        textTheme: Typography.whiteMountainView,
+        tabBarTheme: TabBarTheme(
+          labelColor: Colors.white,
+          unselectedLabelColor: Colors.grey.shade500,
+          indicatorColor: Colors.white,
+        ),
         scaffoldBackgroundColor: Colors.black,
+        bottomAppBarTheme: BottomAppBarTheme(
+          color: Colors.grey.shade900,
+        ),
         primaryColor: const Color(0xFFe9435A),
       ),
-      home: const SignUpScreen(),
+      home: const MainScreen(),
     );
   }
 }

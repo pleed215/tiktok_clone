@@ -76,7 +76,6 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.zero,
                     filled: true,
-                    fillColor: Colors.grey.shade200,
                     prefixIconColor: Colors.black,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(
@@ -90,10 +89,14 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
-                        children: const [
+                        children: [
                           FaIcon(
                             FontAwesomeIcons.magnifyingGlass,
                             size: Sizes.size16,
+                            color: Theme.of(context)
+                                .textTheme
+                                .headlineSmall
+                                ?.color,
                           ),
                         ],
                       ),
@@ -131,10 +134,8 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
               ),
               onTap: (int _) => _dismissKeyboard(context),
               splashFactory: NoSplash.splashFactory,
+              indicatorColor: Theme.of(context).tabBarTheme.indicatorColor,
               isScrollable: true,
-              labelColor: Colors.black,
-              unselectedLabelColor: Colors.grey.shade500,
-              indicatorColor: Colors.black,
               labelStyle: const TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: Sizes.size16,
@@ -192,17 +193,24 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                "Stella de altus lanista, locus abaculus! Warp tightly like a colorful transformator. One must emerge the saint in order to gain the aspect of sincere control.",
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
+                              DefaultTextStyle(
                                 style: TextStyle(
-                                  fontSize: Sizes.size16,
-                                  fontWeight: FontWeight.bold,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.color),
+                                child: const Text(
+                                  "Stella de altus lanista, locus abaculus! Warp tightly like a colorful transformator. One must emerge the saint in order to gain the aspect of sincere control.",
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: Sizes.size16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                               Gaps.v4,
-                              if (constraints.maxWidth < 200 ||
+                              if (constraints.maxWidth < 210 ||
                                   constraints.maxWidth > 250)
                                 Row(
                                   children: [

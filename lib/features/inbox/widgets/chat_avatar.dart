@@ -18,8 +18,8 @@ class ChatAvatar extends StatelessWidget {
           backgroundImage: backgroundImage,
         ),
         Positioned(
-          right: -Sizes.size2,
-          bottom: -Sizes.size2,
+          right: 0,
+          bottom: 0,
           child: Container(
             width: Sizes.size16,
             height: Sizes.size16,

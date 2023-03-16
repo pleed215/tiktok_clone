@@ -7,6 +7,8 @@ import 'package:tiktok_clone/features/inbox/widgets/chat_avatar.dart';
 import 'package:tiktok_clone/features/inbox/widgets/chat_emoji.dart';
 import 'package:tiktok_clone/features/inbox/widgets/chat_widget.dart';
 
+import '../../common/is_dark.dart';
+
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
 
@@ -62,6 +64,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = isDarkMode(context);
     return Scaffold(
       appBar: AppBar(
         title: ListTile(
@@ -84,13 +87,11 @@ class _ChatScreenState extends State<ChatScreen> {
             children: const [
               FaIcon(
                 FontAwesomeIcons.flag,
-                color: Colors.black,
                 size: Sizes.size20,
               ),
               Gaps.h20,
               FaIcon(
                 FontAwesomeIcons.ellipsis,
-                color: Colors.black,
                 size: Sizes.size20,
               ),
             ],
@@ -115,7 +116,7 @@ class _ChatScreenState extends State<ChatScreen> {
             bottom: 0,
             width: MediaQuery.of(context).size.width,
             child: BottomAppBar(
-              color: Colors.grey.shade100,
+              color: isDark ? null : Colors.grey.shade100,
               padding: const EdgeInsets.symmetric(
                 horizontal: Sizes.size14,
                 vertical: Sizes.size10,

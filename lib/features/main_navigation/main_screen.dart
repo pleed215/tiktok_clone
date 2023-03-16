@@ -7,6 +7,8 @@ import 'package:tiktok_clone/features/inbox/inbox_screen.dart';
 import 'package:tiktok_clone/features/user/user_profile_screen.dart';
 import 'package:tiktok_clone/features/videos/video_timeline_screen.dart';
 
+import '../../common/is_dark.dart';
+
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
 
@@ -34,9 +36,11 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = isDarkMode(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: _currentIndex == 0 ? Colors.black : Colors.white,
+      backgroundColor:
+          _currentIndex == 0 || isDark ? Colors.black : Colors.white,
       body: Stack(
         children: [
           Offstage(
@@ -62,7 +66,7 @@ class _MainScreenState extends State<MainScreen> {
         ],
       ),
       bottomNavigationBar: BottomAppBar(
-          color: _currentIndex == 0 ? Colors.black : Colors.white,
+          color: _currentIndex == 0 || isDark ? Colors.black : Colors.white,
           padding: const EdgeInsets.symmetric(
             vertical: Sizes.size8,
             horizontal: Sizes.size16,
@@ -88,7 +92,7 @@ class _MainScreenState extends State<MainScreen> {
               ),
               Gaps.h10,
               NavAddButton(
-                inverted: _currentIndex != 0,
+                inverted: _currentIndex != 0 && !isDark,
               ),
               Gaps.h10,
               NavTab(
@@ -225,6 +229,7 @@ class NavTab extends StatefulWidget {
 class _NavTabState extends State<NavTab> {
   @override
   Widget build(BuildContext context) {
+    final isDark = isDarkMode(context);
     return Expanded(
       child: AnimatedOpacity(
         opacity: widget.isSelected ? 1 : 0.6,
@@ -235,20 +240,24 @@ class _NavTabState extends State<NavTab> {
           onTap: widget.onTap,
           child: Container(
             decoration: BoxDecoration(
-              color: widget.currentIndex == 0 ? Colors.black : Colors.white,
+              color: widget.currentIndex == 0 || isDark
+                  ? Colors.black
+                  : Colors.white,
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 FaIcon(
                   widget.isSelected ? widget.selectedIcon : widget.icon,
-                  color: widget.currentIndex == 0 ? Colors.white : Colors.black,
+                  color: widget.currentIndex == 0 || isDark
+                      ? Colors.white
+                      : Colors.black,
                 ),
                 Gaps.v5,
                 if (widget.text != null)
                   Text(widget.text!,
                       style: TextStyle(
-                        color: widget.currentIndex == 0
+                        color: widget.currentIndex == 0 || isDark
                             ? Colors.white
                             : Colors.black,
                       )),

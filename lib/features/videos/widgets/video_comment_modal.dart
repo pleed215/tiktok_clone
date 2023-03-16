@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
 
+import '../../../common/is_dark.dart';
 import '../../../constants/gaps.dart';
 import '../../../constants/sizes.dart';
 
@@ -36,15 +37,17 @@ class _VideoCommentModalState extends State<VideoCommentModal> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = isDarkMode(context);
     return Container(
       clipBehavior: Clip.hardEdge,
       height: MediaQuery.of(context).size.height * 0.7,
       decoration:
           BoxDecoration(borderRadius: BorderRadius.circular(Sizes.size10)),
       child: Scaffold(
-        backgroundColor: Colors.grey.shade50,
+        backgroundColor: isDark ? null : Colors.grey.shade50,
         appBar: AppBar(
           title: const Text("22796 comments"),
+          backgroundColor: isDark ? null : Colors.grey.shade50,
           automaticallyImplyLeading: false,
           actions: [
             IconButton(
@@ -72,25 +75,28 @@ class _VideoCommentModalState extends State<VideoCommentModal> {
                   return Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CircleAvatar(radius: 18, child: Text("Hr")),
+                      CircleAvatar(
+                        radius: 18,
+                        backgroundColor: isDark ? Colors.grey.shade500 : null,
+                        foregroundColor: isDark ? Colors.grey.shade100 : null,
+                        child: const Text("Hr"),
+                      ),
                       Gaps.h10,
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+                          children: const [
                             Text(
                               'Haru',
                               style: TextStyle(
-                                color: Colors.grey.shade700,
                                 fontWeight: FontWeight.w400,
                                 fontSize: Sizes.size14,
                               ),
                             ),
                             Gaps.v4,
-                            const Text(
+                            Text(
                               "That's not it l've seen the same thing but also in a cave",
                               style: TextStyle(
-                                  color: Colors.black,
                                   fontSize: Sizes.size16,
                                   fontWeight: FontWeight.w400),
                             ),
@@ -115,7 +121,6 @@ class _VideoCommentModalState extends State<VideoCommentModal> {
               bottom: 0,
               width: MediaQuery.of(context).size.width,
               child: BottomAppBar(
-                color: Colors.white,
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: Sizes.size20,
@@ -151,7 +156,6 @@ class _VideoCommentModalState extends State<VideoCommentModal> {
                                   borderSide: BorderSide.none,
                                 ),
                                 filled: true,
-                                fillColor: Colors.grey.shade200,
                                 suffixIcon: Padding(
                                     padding: const EdgeInsets.only(
                                         right: Sizes.size14),
@@ -159,13 +163,22 @@ class _VideoCommentModalState extends State<VideoCommentModal> {
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           FaIcon(FontAwesomeIcons.at,
-                                              color: Colors.grey.shade800),
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .headlineSmall
+                                                  ?.color),
                                           Gaps.h12,
                                           FaIcon(FontAwesomeIcons.gift,
-                                              color: Colors.grey.shade800),
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .headlineSmall
+                                                  ?.color),
                                           Gaps.h12,
                                           FaIcon(FontAwesomeIcons.faceSmile,
-                                              color: Colors.grey.shade800),
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .headlineSmall
+                                                  ?.color),
                                           if (_isDirty)
                                             Row(
                                               children: [

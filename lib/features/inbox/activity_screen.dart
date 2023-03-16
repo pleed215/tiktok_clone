@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/features/inbox/widgets/activity_menu.dart';
 
+import '../../common/is_dark.dart';
 import '../../constants/sizes.dart';
 import 'direct_message_screen.dart';
 
@@ -73,6 +74,7 @@ class _ActivityScreenState extends State<ActivityScreen>
 
   @override
   Widget build(BuildContext context) {
+    final isDark = isDarkMode(context);
     return Scaffold(
       appBar: AppBar(
         title: GestureDetector(

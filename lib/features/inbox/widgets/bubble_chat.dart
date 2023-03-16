@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../common/is_dark.dart';
 import '../../../constants/sizes.dart';
 
 class BubbleShape extends CustomPainter {
@@ -68,11 +69,13 @@ class _BubbleChatState extends State<BubbleChat> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = isDarkMode(context);
     return Expanded(
       child: Stack(
         children: [
           CustomPaint(
-            painter: const BubbleShape(color: Colors.white),
+            painter: BubbleShape(
+                color: isDark ? Colors.grey.shade600 : Colors.white),
             child: Container(height: 60.0),
           ),
           Center(
