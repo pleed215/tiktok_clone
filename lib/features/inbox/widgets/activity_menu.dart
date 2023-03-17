@@ -20,10 +20,10 @@ class ActivityMenu extends StatelessWidget {
       onTap: onTap,
       title: Row(
         children: [
-          FaIcon(
+          Icon(
             icon,
             size: Sizes.size14,
-            color: Colors.black,
+            color: Theme.of(context).textTheme.headlineSmall?.color,
           ),
           Gaps.h20,
           Text(

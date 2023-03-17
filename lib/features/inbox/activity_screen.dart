@@ -187,9 +187,9 @@ class _ActivityScreenState extends State<ActivityScreen>
                     title: RichText(
                       text: TextSpan(
                           text: "Account updates:",
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontWeight: FontWeight.w600,
-                            color: Colors.black,
+                            color: isDark ? Colors.white : Colors.black,
                           ),
                           children: [
                             const TextSpan(
@@ -201,7 +201,9 @@ class _ActivityScreenState extends State<ActivityScreen>
                                 text: " $item",
                                 style: TextStyle(
                                     fontWeight: FontWeight.normal,
-                                    color: Colors.grey.shade500))
+                                    color: isDark
+                                        ? Colors.grey.shade400
+                                        : Colors.grey.shade500))
                           ]),
                     ),
                     trailing: FaIcon(
@@ -221,9 +223,9 @@ class _ActivityScreenState extends State<ActivityScreen>
           SlideTransition(
             position: _panelAnimation,
             child: Container(
-                decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
+                decoration: BoxDecoration(
+                    color: Theme.of(context).appBarTheme.backgroundColor,
+                    borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(Sizes.size5),
                       bottomRight: Radius.circular(Sizes.size5),
                     )),
