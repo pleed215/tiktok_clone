@@ -4,6 +4,7 @@ import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/login_form_screen.dart';
 import 'package:tiktok_clone/features/authentication/widgets/auth_button.dart';
+import 'package:tiktok_clone/generated/l10n.dart';
 
 class LogInScreen extends StatelessWidget {
   const LogInScreen({Key? key}) : super(key: key);
@@ -19,20 +20,20 @@ class LogInScreen extends StatelessWidget {
           child: Column(
             children: [
               Gaps.v80,
-              const Text(
-                "Log in to TikTok",
-                style: TextStyle(
+              Text(
+                S.of(context).loginTitle("TikTok"),
+                style: const TextStyle(
                   fontSize: Sizes.size24,
                   fontWeight: FontWeight.w700,
                 ),
               ),
               Gaps.v20,
-              const Opacity(
+              Opacity(
                 opacity: 0.7,
                 child: Text(
-                  "Manage your account, check notifications, comment on videos, and more.",
+                  S.of(context).loginSubTitle,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: Sizes.size16,
                   ),
                 ),
@@ -40,7 +41,7 @@ class LogInScreen extends StatelessWidget {
               Gaps.v40,
               AuthButton(
                 icon: const FaIcon(FontAwesomeIcons.user),
-                text: "Use phone or email",
+                text: S.of(context).usePhoneOrEmail,
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => const LoginFormScreen(),

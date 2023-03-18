@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/intl_generated.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/username_screen.dart';
 import 'package:tiktok_clone/features/authentication/widgets/auth_button.dart';
+import "package:tiktok_clone/generated/l10n.dart";
 
 import '../../constants/gaps.dart';
 import 'log_in.dart';
@@ -43,14 +43,14 @@ class SignUpScreen extends StatelessWidget {
               children: [
                 Gaps.v80,
                 Text(
-                  AppLocalizations.of(context)!.signUpTitle("TikTok"),
+                  S.of(context).signUpTitle("TikTok"),
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 Gaps.v20,
                 Opacity(
                   opacity: 0.7,
                   child: Text(
-                    AppLocalizations.of(context)!.signUpSubTitle,
+                    S.of(context).signUpSubTitle,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontSize: Sizes.size16,
