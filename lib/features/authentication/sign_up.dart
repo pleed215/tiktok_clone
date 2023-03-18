@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/intl_generated.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/username_screen.dart';
@@ -30,6 +31,7 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(Localizations.localeOf(context));
     return OrientationBuilder(builder: (context, orientation) {
       return Scaffold(
         body: SafeArea(
@@ -41,16 +43,16 @@ class SignUpScreen extends StatelessWidget {
               children: [
                 Gaps.v80,
                 Text(
-                  "Sign up for TikTok",
+                  AppLocalizations.of(context)!.signUpTitle("TikTok"),
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 Gaps.v20,
-                const Opacity(
+                Opacity(
                   opacity: 0.7,
                   child: Text(
-                    "Create a profile, follow other accounts, make your own videos, and more.",
+                    AppLocalizations.of(context)!.signUpSubTitle,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: Sizes.size16,
                     ),
                   ),

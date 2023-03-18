@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tiktok_clone/features/main_navigation/main_screen.dart';
+import 'package:flutter_gen/gen_l10n/intl_generated.dart';
+import 'package:tiktok_clone/features/authentication/sign_up.dart';
 
 import 'constants/sizes.dart';
 
@@ -19,6 +20,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       debugShowCheckedModeBanner: true,
       themeMode: ThemeMode.system,
       theme: ThemeData(
@@ -80,7 +83,7 @@ class MyApp extends StatelessWidget {
         ),
         primaryColor: const Color(0xFFe9435A),
       ),
-      home: const MainScreen(),
+      home: const SignUpScreen(),
     );
   }
 }
