@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
+import "package:tiktok_clone/generated/l10n.dart";
 
 import '../../../common/is_dark.dart';
 import '../../../constants/gaps.dart';
@@ -46,7 +47,7 @@ class _VideoCommentModalState extends State<VideoCommentModal> {
       child: Scaffold(
         backgroundColor: isDark ? null : Colors.grey.shade50,
         appBar: AppBar(
-          title: const Text("22796 comments"),
+          title: Text(S.of(context).commentCountTitle(2929292).toString()),
           backgroundColor: isDark ? null : Colors.grey.shade50,
           automaticallyImplyLeading: false,
           actions: [
@@ -106,7 +107,7 @@ class _VideoCommentModalState extends State<VideoCommentModal> {
                       Gaps.h8,
                       VideoButton(
                         icon: FontAwesomeIcons.heart,
-                        text: '52.2K',
+                        text: S.of(context).likeCount(5200000),
                         color: Colors.grey.shade500,
                         iconSize: Sizes.size24,
                         fontSize: Sizes.size14,

@@ -31,7 +31,7 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(Localizations.localeOf(context));
+    S.load(Locale('ko'));
     return OrientationBuilder(builder: (context, orientation) {
       return Scaffold(
         body: SafeArea(
@@ -91,7 +91,8 @@ class SignUpScreen extends StatelessWidget {
                   child: FaIcon(
                     FontAwesomeIcons.chevronDown,
                   ),
-                )
+                ),
+                Text(S.of(context).pluralTest(1)),
               ],
             ),
           ),

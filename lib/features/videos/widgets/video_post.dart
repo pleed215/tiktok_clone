@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_comment_modal.dart';
+import 'package:tiktok_clone/generated/l10n.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -188,14 +189,14 @@ class _VideoPostState extends State<VideoPost>
                 child: Text('Haru'),
               ),
               Gaps.v24,
-              const VideoButton(
+              VideoButton(
                 icon: FontAwesomeIcons.solidHeart,
-                text: "2.9M",
+                text: S.of(context).likeCount(2900),
               ),
               Gaps.v24,
               VideoButton(
                 icon: FontAwesomeIcons.solidComment,
-                text: "33K",
+                text: S.of(context).commentCount(3300000),
                 onTap: () {
                   // if(_videoPlayerController.value.isPlaying) {
                   // _toggleVideoState();

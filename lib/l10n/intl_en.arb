@@ -21,5 +21,36 @@
         }
     },
     "loginSubTitle": "Manage your account, check notifications, comment on videos, and more.",
-    "usePhoneOrEmail": "Use phone or email"
+    "usePhoneOrEmail": "Use phone or email",
+    "pluralTest": "Plural test, {count} {count, plural, =0{ videos} =1{video} other{videos}} plural test",
+    "likeCount": "{count}",
+    "@likeCount": {
+        "description": "Anything you want",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "format": "compact"
+            }
+        }
+    },
+    "commentCount": "{count}",
+    "@commentCount": {
+        "description": "Anything you want",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "format": "compact"
+            }
+        }
+    },
+    "commentCountTitle": "{count}, {count, plural, =0{comments} =1{comment} other{comments}}",
+    "@commentCountTitle": {
+        "description": "Anything you want",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "format": "compact"
+            }
+        }
+    }
 }

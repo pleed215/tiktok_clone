@@ -20,17 +20,27 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'es';
 
-  static String m0(nameOfTheApp) => "iniciar sesión en la ${nameOfTheApp}";
+  static String m0(count) => "${count}";
 
-  static String m1(nameOfTheApp) => "Únete a la ${nameOfTheApp}";
+  static String m1(count) =>
+      "${count}, ${Intl.plural(count, zero: 'comments', one: 'comment', other: 'comments')}";
+
+  static String m2(count) => "${count}";
+
+  static String m3(nameOfTheApp) => "iniciar sesión en la ${nameOfTheApp}";
+
+  static String m5(nameOfTheApp) => "Únete a la ${nameOfTheApp}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "commentCount": m0,
+        "commentCountTitle": m1,
+        "likeCount": m2,
         "loginSubTitle": MessageLookupByLibrary.simpleMessage(
             "Administre su cuenta, verifique notificaciones, comente videos y más."),
-        "loginTitle": m0,
+        "loginTitle": m3,
         "signUpSubTitle": MessageLookupByLibrary.simpleMessage(
             "Crea un perfil, sigue otras cuentas, haz tus propios videos y más."),
-        "signUpTitle": m1
+        "signUpTitle": m5
       };
 }

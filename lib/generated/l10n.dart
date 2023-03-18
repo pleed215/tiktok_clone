@@ -99,6 +99,61 @@ class S {
       args: [],
     );
   }
+
+  /// `Plural test, {count} {count, plural, =0{ videos} =1{video} other{videos}} plural test`
+  String pluralTest(num count) {
+    return Intl.message(
+      'Plural test, $count ${Intl.plural(count, zero: ' videos', one: 'video', other: 'videos')} plural test',
+      name: 'pluralTest',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `{count}`
+  String likeCount(int count) {
+    final NumberFormat countNumberFormat = NumberFormat.compact(
+      locale: Intl.getCurrentLocale(),
+    );
+    final String countString = countNumberFormat.format(count);
+
+    return Intl.message(
+      '$countString',
+      name: 'likeCount',
+      desc: 'Anything you want',
+      args: [countString],
+    );
+  }
+
+  /// `{count}`
+  String commentCount(int count) {
+    final NumberFormat countNumberFormat = NumberFormat.compact(
+      locale: Intl.getCurrentLocale(),
+    );
+    final String countString = countNumberFormat.format(count);
+
+    return Intl.message(
+      '$countString',
+      name: 'commentCount',
+      desc: 'Anything you want',
+      args: [countString],
+    );
+  }
+
+  /// `{count}, {count, plural, =0{comments} =1{comment} other{comments}}`
+  String commentCountTitle(int count) {
+    final NumberFormat countNumberFormat = NumberFormat.compact(
+      locale: Intl.getCurrentLocale(),
+    );
+    final String countString = countNumberFormat.format(count);
+
+    return Intl.message(
+      '$countString, ${Intl.plural(count, zero: 'comments', one: 'comment', other: 'comments')}',
+      name: 'commentCountTitle',
+      desc: 'Anything you want',
+      args: [countString],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

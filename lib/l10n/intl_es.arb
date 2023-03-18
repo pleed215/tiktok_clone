@@ -2,5 +2,8 @@
     "signUpTitle": "Únete a la {nameOfTheApp}",
     "signUpSubTitle": "Crea un perfil, sigue otras cuentas, haz tus propios videos y más.",
     "loginTitle": "iniciar sesión en la {nameOfTheApp}",
-    "loginSubTitle": "Administre su cuenta, verifique notificaciones, comente videos y más."
+    "loginSubTitle": "Administre su cuenta, verifique notificaciones, comente videos y más.",
+    "likeCount": "{count}",
+    "commentCount": "{count}",
+    "commentCountTitle": "{count}, {count, plural, =0{comments} =1{comment} other{comments}}"
 }
