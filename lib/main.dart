@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:tiktok_clone/features/authentication/email_screen.dart';
+import 'package:tiktok_clone/features/authentication/log_in.dart';
 import 'package:tiktok_clone/features/authentication/sign_up.dart';
+import 'package:tiktok_clone/features/authentication/username_screen.dart';
 
 import 'constants/sizes.dart';
 import "generated/l10n.dart";
@@ -89,7 +92,13 @@ class MyApp extends StatelessWidget {
         ),
         primaryColor: const Color(0xFFe9435A),
       ),
-      home: const SignUpScreen(),
+      routes: {
+        SignUpScreen.routeName: (context) => const SignUpScreen(),
+        UsernameScreen.routeName: (context) => const UsernameScreen(),
+        LogInScreen.routeName: (context) => const LogInScreen(),
+        EmailScreen.routeName: (context) => const EmailScreen(),
+      },
+      initialRoute: SignUpScreen.routeName,
     );
   }
 }

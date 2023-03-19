@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/authentication/log_in.dart';
 import 'package:tiktok_clone/features/authentication/username_screen.dart';
 import 'package:tiktok_clone/features/authentication/widgets/auth_button.dart';
 import "package:tiktok_clone/generated/l10n.dart";
 
 import '../../constants/gaps.dart';
-import 'log_in.dart';
 
 class AuthItem {
   static Widget builder(
@@ -27,6 +27,8 @@ class AuthItem {
 }
 
 class SignUpScreen extends StatelessWidget {
+  static String routeName = "/";
+
   const SignUpScreen({Key? key}) : super(key: key);
 
   @override
@@ -68,9 +70,26 @@ class SignUpScreen extends StatelessWidget {
                         icon: const FaIcon(FontAwesomeIcons.user),
                         text: "Use phone or email",
                         onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const UsernameScreen(),
-                          ));
+                          // Navigator.of(context).push(PageRouteBuilder(
+                          //   transitionDuration:
+                          //       const Duration(milliseconds: 300),
+                          //   reverseTransitionDuration:
+                          //       const Duration(milliseconds: 300),
+                          //   transitionsBuilder: (context, animation,
+                          //       secondaryAnimation, child) {
+                          //     final offsetAnimation = Tween(
+                          //             begin: const Offset(0, 1),
+                          //             end: Offset.zero)
+                          //         .animate(animation);
+                          //     return SlideTransition(
+                          //         position: offsetAnimation, child: child);
+                          //   },
+                          //   pageBuilder:
+                          //       (context, animation, secondaryAnimation) =>
+                          //           const UsernameScreen(),
+                          // ));
+                          Navigator.of(context)
+                              .pushNamed(UsernameScreen.routeName);
                         },
                       ),
                       AuthButton(
@@ -110,10 +129,10 @@ class SignUpScreen extends StatelessWidget {
                 const Text('Already have an account?'),
                 Gaps.h5,
                 GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const LogInScreen(),
-                    ));
+                  onTap: () async {
+                    final result = await Navigator.of(context)
+                        .pushNamed(LogInScreen.routeName);
+                    print(result);
                   },
                   child: Text(
                     'Log in',

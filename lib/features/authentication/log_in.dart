@@ -7,6 +7,8 @@ import 'package:tiktok_clone/features/authentication/widgets/auth_button.dart';
 import 'package:tiktok_clone/generated/l10n.dart';
 
 class LogInScreen extends StatelessWidget {
+  static String routeName = "/login";
+
   const LogInScreen({Key? key}) : super(key: key);
 
   @override
@@ -82,7 +84,7 @@ class LogInScreen extends StatelessWidget {
               Gaps.h5,
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(context).pop("Hello");
                   // Navigator.of(context).push(MaterialPageRoute(
                   //   builder: (context) => const SignUpScreen(),
                   // ));
