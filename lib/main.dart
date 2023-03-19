@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:tiktok_clone/features/main_navigation/main_screen.dart';
+import 'package:tiktok_clone/features/authentication/sign_up.dart';
 
 import 'constants/sizes.dart';
 import "generated/l10n.dart";
@@ -89,7 +89,7 @@ class MyApp extends StatelessWidget {
         ),
         primaryColor: const Color(0xFFe9435A),
       ),
-      home: const MainScreen(),
+      home: const SignUpScreen(),
     );
   }
 }

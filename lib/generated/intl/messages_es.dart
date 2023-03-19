@@ -29,7 +29,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m3(nameOfTheApp) => "iniciar sesión en la ${nameOfTheApp}";
 
-  static String m5(nameOfTheApp) => "Únete a la ${nameOfTheApp}";
+  static String m5(nameOfTheApp, when) => "Únete a la ${nameOfTheApp} ${when}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{

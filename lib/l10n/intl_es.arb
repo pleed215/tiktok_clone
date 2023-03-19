@@ -1,5 +1,5 @@
 {
-    "signUpTitle": "Únete a la {nameOfTheApp}",
+    "signUpTitle": "Únete a la {nameOfTheApp} {when}",
     "signUpSubTitle": "Crea un perfil, sigue otras cuentas, haz tus propios videos y más.",
     "loginTitle": "iniciar sesión en la {nameOfTheApp}",
     "loginSubTitle": "Administre su cuenta, verifique notificaciones, comente videos y más.",

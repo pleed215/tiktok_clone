@@ -1,5 +1,5 @@
 {
-    "signUpTitle": "{nameOfTheApp} 회원 가입",
+    "signUpTitle": "{nameOfTheApp} 회원 가입 {when}",
     "signUpSubTitle": "계정을 만들어서 친구들을 팔로우 하시고 멋진 비디오도 만들어 보세용~",
     "loginTitle": "{nameOfTheApp} 로그인",
     "loginSubTitle": "로그인하여 계정관리, 알람확인, 영상에 댓글달기 등을 해보세용~",
