@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/log_in.dart';
 import 'package:tiktok_clone/features/authentication/username_screen.dart';
@@ -27,7 +28,8 @@ class AuthItem {
 }
 
 class SignUpScreen extends StatelessWidget {
-  static String routeName = "/";
+  static String routeUrl = "/";
+  static String routeName = "signup_screen";
 
   const SignUpScreen({Key? key}) : super(key: key);
 
@@ -88,8 +90,8 @@ class SignUpScreen extends StatelessWidget {
                           //       (context, animation, secondaryAnimation) =>
                           //           const UsernameScreen(),
                           // ));
-                          Navigator.of(context)
-                              .pushNamed(UsernameScreen.routeName);
+                          //context.push(UsernameScreen.routeUrl);
+                          context.pushNamed(UsernameScreen.routeName);
                         },
                       ),
                       AuthButton(
@@ -130,9 +132,7 @@ class SignUpScreen extends StatelessWidget {
                 Gaps.h5,
                 GestureDetector(
                   onTap: () async {
-                    final result = await Navigator.of(context)
-                        .pushNamed(LogInScreen.routeName);
-                    print(result);
+                    context.push(LogInScreen.routeUrl);
                   },
                   child: Text(
                     'Log in',

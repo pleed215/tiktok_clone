@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:tiktok_clone/features/authentication/email_screen.dart';
-import 'package:tiktok_clone/features/authentication/log_in.dart';
-import 'package:tiktok_clone/features/authentication/sign_up.dart';
-import 'package:tiktok_clone/features/authentication/username_screen.dart';
+import 'package:tiktok_clone/router.dart';
 
 import 'constants/sizes.dart';
 import "generated/l10n.dart";
@@ -22,7 +19,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: router,
       title: 'Flutter Demo',
       localizationsDelegates: const [
         S.delegate,
@@ -92,13 +90,6 @@ class MyApp extends StatelessWidget {
         ),
         primaryColor: const Color(0xFFe9435A),
       ),
-      routes: {
-        SignUpScreen.routeName: (context) => const SignUpScreen(),
-        UsernameScreen.routeName: (context) => const UsernameScreen(),
-        LogInScreen.routeName: (context) => const LogInScreen(),
-        EmailScreen.routeName: (context) => const EmailScreen(),
-      },
-      initialRoute: SignUpScreen.routeName,
     );
   }
 }

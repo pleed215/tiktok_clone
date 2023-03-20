@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/login_form_screen.dart';
@@ -7,7 +8,8 @@ import 'package:tiktok_clone/features/authentication/widgets/auth_button.dart';
 import 'package:tiktok_clone/generated/l10n.dart';
 
 class LogInScreen extends StatelessWidget {
-  static String routeName = "/login";
+  static String routeUrl = "/login";
+  static String routeName = "login_screen";
 
   const LogInScreen({Key? key}) : super(key: key);
 
@@ -84,7 +86,7 @@ class LogInScreen extends StatelessWidget {
               Gaps.h5,
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pop("Hello");
+                  context.pop("hello");
                   // Navigator.of(context).push(MaterialPageRoute(
                   //   builder: (context) => const SignUpScreen(),
                   // ));
