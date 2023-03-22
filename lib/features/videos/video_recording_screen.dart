@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:tiktok_clone/features/videos/widgets/flash_mode.dart';
 
 import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
@@ -26,6 +27,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
   MediaPermissionStatus _hasPermission = MediaPermissionStatus.requesting;
   late CameraController _cameraController;
   bool _isSelfie = false;
+  late FlashMode _flashMode;
 
   Future<void> initPermissions() async {
     setState(() {
@@ -60,6 +62,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
     _cameraController = CameraController(
         cameras[_isSelfie ? 1 : 0], ResolutionPreset.ultraHigh);
     await _cameraController.initialize();
+    _flashMode = _cameraController.value.flashMode;
   }
 
   @override
@@ -105,6 +108,12 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
     setState(() {});
   }
 
+  Future<void> _setFlashMode(FlashMode flashMode) async {
+    _flashMode = flashMode;
+    _cameraController.setFlashMode(_flashMode);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,10 +128,17 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
                       Positioned(
                         right: 0,
                         top: 20,
-                        child: IconButton(
-                          color: Colors.white,
-                          onPressed: _toggleSelfie,
-                          icon: const FaIcon(FontAwesomeIcons.cameraRotate),
+                        child: Column(
+                          children: [
+                            IconButton(
+                              color: Colors.white,
+                              onPressed: _toggleSelfie,
+                              icon: const FaIcon(FontAwesomeIcons.cameraRotate),
+                            ),
+                            Gaps.v10,
+                            FlashModeWidget(
+                                cameraController: _cameraController),
+                          ],
                         ),
                       ),
                     ],
