@@ -23,11 +23,22 @@ class VideoRecordingScreen extends StatefulWidget {
   State<VideoRecordingScreen> createState() => _VideoRecordingScreenState();
 }
 
-class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
+class _VideoRecordingScreenState extends State<VideoRecordingScreen>
+    with TickerProviderStateMixin {
   MediaPermissionStatus _hasPermission = MediaPermissionStatus.requesting;
   late CameraController _cameraController;
   bool _isSelfie = false;
   late FlashMode _flashMode;
+  late final _buttonAnimationController = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 200));
+  late final _buttonAnimation =
+      Tween(begin: 1.0, end: 1.3).animate(_buttonAnimationController);
+  bool _isTapDown = false;
+  late final _progressAnimationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 10),
+      upperBound: 1.0,
+      lowerBound: 0.0);
 
   Future<void> initPermissions() async {
     setState(() {
@@ -69,6 +80,14 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
   void initState() {
     super.initState();
     initPermissions();
+    _progressAnimationController.addListener(() {
+      setState(() {});
+    });
+    _progressAnimationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _stopRecording();
+      }
+    });
   }
 
   @override
@@ -102,15 +121,23 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
     );
   }
 
-  Future<void> _toggleSelfie() async {
-    _isSelfie = !_isSelfie;
-    await initCamera();
+  void _startRecording(TapDownDetails _) {
+    _buttonAnimationController.forward();
+    _progressAnimationController.forward();
+    _isTapDown = true;
     setState(() {});
   }
 
-  Future<void> _setFlashMode(FlashMode flashMode) async {
-    _flashMode = flashMode;
-    _cameraController.setFlashMode(_flashMode);
+  void _stopRecording() {
+    _buttonAnimationController.reverse();
+    _progressAnimationController.reset();
+    _isTapDown = false;
+    setState(() {});
+  }
+
+  Future<void> _toggleSelfie() async {
+    _isSelfie = !_isSelfie;
+    await initCamera();
     setState(() {});
   }
 
@@ -123,6 +150,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
               ? FractionallySizedBox(
                   widthFactor: 1,
                   child: Stack(
+                    alignment: Alignment.center,
                     children: [
                       CameraPreview(_cameraController),
                       Positioned(
@@ -139,6 +167,38 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
                             FlashModeWidget(
                                 cameraController: _cameraController),
                           ],
+                        ),
+                      ),
+                      Positioned(
+                        bottom: Sizes.size28,
+                        child: GestureDetector(
+                          onTapDown: _startRecording,
+                          onTapUp: (_) => _stopRecording(),
+                          child: ScaleTransition(
+                            scale: _buttonAnimation,
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                SizedBox(
+                                  width: Sizes.size72,
+                                  height: Sizes.size72,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.red.shade400,
+                                    strokeWidth: Sizes.size8,
+                                    value: _progressAnimationController.value,
+                                  ),
+                                ),
+                                Container(
+                                  width: Sizes.size60,
+                                  height: Sizes.size60,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.red.shade500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                     ],
