@@ -28,12 +28,10 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   MediaPermissionStatus _hasPermission = MediaPermissionStatus.requesting;
   late CameraController _cameraController;
   bool _isSelfie = false;
-  late FlashMode _flashMode;
   late final _buttonAnimationController = AnimationController(
       vsync: this, duration: const Duration(milliseconds: 200));
   late final _buttonAnimation =
       Tween(begin: 1.0, end: 1.3).animate(_buttonAnimationController);
-  bool _isTapDown = false;
   late final _progressAnimationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 10),
@@ -73,7 +71,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     _cameraController = CameraController(
         cameras[_isSelfie ? 1 : 0], ResolutionPreset.ultraHigh);
     await _cameraController.initialize();
-    _flashMode = _cameraController.value.flashMode;
+    await _cameraController.prepareForVideoRecording();
   }
 
   @override
@@ -121,23 +119,37 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     );
   }
 
-  void _startRecording(TapDownDetails _) {
+  Future<void> _startRecording(TapDownDetails _) async {
+    if (_cameraController.value.isRecordingVideo) {
+      return;
+    }
+    await _cameraController.startVideoRecording();
     _buttonAnimationController.forward();
     _progressAnimationController.forward();
-    _isTapDown = true;
     setState(() {});
   }
 
-  void _stopRecording() {
+  Future<void> _stopRecording() async {
+    if (!_cameraController.value.isRecordingVideo) {
+      return;
+    }
     _buttonAnimationController.reverse();
     _progressAnimationController.reset();
-    _isTapDown = false;
-    setState(() {});
+    try {
+      final videoFile = await _cameraController.stopVideoRecording();
+      print(videoFile.path);
+      print(videoFile.name);
+    } on CameraException catch (_, e) {
+      print(e);
+    } finally {
+      setState(() {});
+    }
   }
 
   Future<void> _toggleSelfie() async {
     _isSelfie = !_isSelfie;
     await initCamera();
+    print("tapped");
     setState(() {});
   }
 
@@ -155,7 +167,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                       CameraPreview(_cameraController),
                       Positioned(
                         right: 0,
-                        top: 20,
+                        top: 40,
                         child: Column(
                           children: [
                             IconButton(
