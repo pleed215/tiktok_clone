@@ -28,7 +28,7 @@ class AuthItem {
 }
 
 class SignUpScreen extends StatelessWidget {
-  static String routeUrl = "/";
+  static String routeUrl = "/signup";
   static String routeName = "signup_screen";
 
   const SignUpScreen({Key? key}) : super(key: key);
