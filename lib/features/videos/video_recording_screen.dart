@@ -1,7 +1,9 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:tiktok_clone/features/videos/video_preview_screen.dart';
 import 'package:tiktok_clone/features/videos/widgets/flash_mode.dart';
 
 import '../../constants/gaps.dart';
@@ -69,7 +71,10 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
       return;
     }
     _cameraController = CameraController(
-        cameras[_isSelfie ? 1 : 0], ResolutionPreset.ultraHigh);
+      cameras[_isSelfie ? 1 : 0],
+      ResolutionPreset.ultraHigh,
+      enableAudio: false,
+    );
     await _cameraController.initialize();
     await _cameraController.prepareForVideoRecording();
   }
@@ -90,6 +95,8 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
 
   @override
   void dispose() {
+    _buttonAnimationController.dispose();
+    _progressAnimationController.dispose();
     _cameraController.dispose();
     super.dispose();
   }
@@ -137,8 +144,15 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     _progressAnimationController.reset();
     try {
       final videoFile = await _cameraController.stopVideoRecording();
-      print(videoFile.path);
-      print(videoFile.name);
+      if (!mounted) return;
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => VideoPreviewScreen(
+              video: videoFile,
+              isPicked: false,
+            ),
+          ));
     } on CameraException catch (_, e) {
       print(e);
     } finally {
@@ -151,6 +165,16 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     await initCamera();
     print("tapped");
     setState(() {});
+  }
+
+  Future<void> _onTapPickVideo() async {
+    final video = await ImagePicker().pickVideo(
+      source: ImageSource.gallery,
+    );
+    if (video == null) {
+      return;
+    }
+    print(video);
   }
 
   @override
@@ -183,34 +207,53 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                       ),
                       Positioned(
                         bottom: Sizes.size28,
-                        child: GestureDetector(
-                          onTapDown: _startRecording,
-                          onTapUp: (_) => _stopRecording(),
-                          child: ScaleTransition(
-                            scale: _buttonAnimation,
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                SizedBox(
-                                  width: Sizes.size72,
-                                  height: Sizes.size72,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.red.shade400,
-                                    strokeWidth: Sizes.size8,
-                                    value: _progressAnimationController.value,
-                                  ),
+                        width: MediaQuery.of(context).size.width,
+                        child: Row(
+                          children: [
+                            const Spacer(),
+                            GestureDetector(
+                              onTapDown: _startRecording,
+                              onTapUp: (_) => _stopRecording(),
+                              child: ScaleTransition(
+                                scale: _buttonAnimation,
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    SizedBox(
+                                      width: Sizes.size72,
+                                      height: Sizes.size72,
+                                      child: CircularProgressIndicator(
+                                        color: Colors.red.shade400,
+                                        strokeWidth: Sizes.size8,
+                                        value:
+                                            _progressAnimationController.value,
+                                      ),
+                                    ),
+                                    Container(
+                                      width: Sizes.size60,
+                                      height: Sizes.size60,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.red.shade500,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                Container(
-                                  width: Sizes.size60,
-                                  height: Sizes.size60,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.red.shade500,
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
-                          ),
+                            Expanded(
+                              child: Container(
+                                alignment: Alignment.center,
+                                child: IconButton(
+                                  onPressed: _onTapPickVideo,
+                                  icon: const FaIcon(
+                                    FontAwesomeIcons.image,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
                         ),
                       ),
                     ],

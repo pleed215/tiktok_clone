@@ -68,7 +68,7 @@
 
     <!-- Permission options for the `photos` group -->
     <key>NSPhotoLibraryUsageDescription</key>
-    <string>photos</string>
+    <string>Please agree access permission if you want to proceed.</string>
 
     <!-- Permission options for the `reminder` group -->
     <key>NSRemindersUsageDescription</key>
