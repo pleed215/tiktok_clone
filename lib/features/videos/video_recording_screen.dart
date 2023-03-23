@@ -26,7 +26,7 @@ class VideoRecordingScreen extends StatefulWidget {
 }
 
 class _VideoRecordingScreenState extends State<VideoRecordingScreen>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   MediaPermissionStatus _hasPermission = MediaPermissionStatus.requesting;
   late CameraController _cameraController;
   bool _isSelfie = false;
@@ -39,6 +39,29 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
       duration: const Duration(seconds: 10),
       upperBound: 1.0,
       lowerBound: 0.0);
+
+  bool _isAppInactive = false;
+
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (_hasPermission != MediaPermissionStatus.allowed) return;
+
+    try {
+      if (!_cameraController.value.isInitialized) {
+        return;
+      }
+
+      if (state == AppLifecycleState.inactive) {
+        _isAppInactive = true;
+        await _cameraController.dispose();
+      } else if (state == AppLifecycleState.resumed) {
+        _isAppInactive = false;
+        await initCamera();
+      }
+    } on CameraException catch (_, e) {
+      setState(() {});
+    }
+  }
 
   Future<void> initPermissions() async {
     setState(() {
@@ -77,11 +100,13 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     );
     await _cameraController.initialize();
     await _cameraController.prepareForVideoRecording();
+    setState(() {});
   }
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     initPermissions();
     _progressAnimationController.addListener(() {
       setState(() {});
@@ -98,6 +123,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     _buttonAnimationController.dispose();
     _progressAnimationController.dispose();
     _cameraController.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -174,7 +200,16 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     if (video == null) {
       return;
     }
-    print(video);
+    if (!mounted) return;
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => VideoPreviewScreen(
+          video: video,
+          isPicked: true,
+        ),
+      ),
+    );
   }
 
   @override
@@ -182,7 +217,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     return Scaffold(
       backgroundColor: Colors.black,
       body: _hasPermission == MediaPermissionStatus.allowed
-          ? _cameraController.value.isInitialized
+          ? _cameraController.value.isInitialized && !_isAppInactive
               ? FractionallySizedBox(
                   widthFactor: 1,
                   child: Stack(
