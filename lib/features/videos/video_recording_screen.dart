@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -39,16 +42,16 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
       duration: const Duration(seconds: 10),
       upperBound: 1.0,
       lowerBound: 0.0);
+  late final bool _noCamera = kDebugMode && Platform.isIOS;
 
   bool _isAppInactive = false;
   double _maximumZoomLevel = 0.0;
-  double _minimumZoomLevel = 0.0;
   double _currentZoomLevel = 1.0;
   final double _zoomStep = 0.05;
 
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
-    if (_hasPermission != MediaPermissionStatus.allowed) return;
+    if (_noCamera || _hasPermission != MediaPermissionStatus.allowed) return;
 
     try {
       if (!_cameraController.value.isInitialized) {
@@ -105,7 +108,6 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     await _cameraController.initialize();
     await _cameraController.prepareForVideoRecording();
     _maximumZoomLevel = await _cameraController.getMaxZoomLevel();
-    _minimumZoomLevel = await _cameraController.getMinZoomLevel();
     _currentZoomLevel = 1.0;
     await _cameraController.setZoomLevel(1.0);
     setState(() {});
@@ -115,7 +117,13 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    initPermissions();
+    if (!_noCamera) {
+      initPermissions();
+    } else {
+      setState(() {
+        _hasPermission = MediaPermissionStatus.allowed;
+      });
+    }
     _progressAnimationController.addListener(() {
       setState(() {});
     });
@@ -161,8 +169,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   }
 
   void _onPanUpdateCameraButton(DragUpdateDetails details) {
-    print(
-        'delta: ${details.delta}, primaryDelta: ${details.primaryDelta}, globalPosition: ${details.globalPosition}, localPosition: ${details.localPosition}');
+    if (_noCamera) return;
     if (details.delta.dy < 0 && _currentZoomLevel < _maximumZoomLevel) {
       _currentZoomLevel += _zoomStep;
     } else if (details.delta.dy > 0 && _currentZoomLevel > 1.0) {
@@ -174,7 +181,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   }
 
   Future<void> _startRecording(TapDownDetails _) async {
-    if (_cameraController.value.isRecordingVideo) {
+    if (_noCamera || _cameraController.value.isRecordingVideo) {
       return;
     }
     await _cameraController.startVideoRecording();
@@ -184,7 +191,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   }
 
   Future<void> _stopRecording() async {
-    if (!_cameraController.value.isRecordingVideo) {
+    if (_noCamera || !_cameraController.value.isRecordingVideo) {
       return;
     }
     _buttonAnimationController.reverse();
@@ -238,29 +245,31 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     return Scaffold(
       backgroundColor: Colors.black,
       body: _hasPermission == MediaPermissionStatus.allowed
-          ? _cameraController.value.isInitialized && !_isAppInactive
+          ? !_isAppInactive
               ? FractionallySizedBox(
                   widthFactor: 1,
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
-                      CameraPreview(_cameraController),
-                      Positioned(
-                        right: 0,
-                        top: 40,
-                        child: Column(
-                          children: [
-                            IconButton(
-                              color: Colors.white,
-                              onPressed: _toggleSelfie,
-                              icon: const FaIcon(FontAwesomeIcons.cameraRotate),
-                            ),
-                            Gaps.v10,
-                            FlashModeWidget(
-                                cameraController: _cameraController),
-                          ],
+                      if (!_noCamera) CameraPreview(_cameraController),
+                      if (!_noCamera)
+                        Positioned(
+                          right: 0,
+                          top: 40,
+                          child: Column(
+                            children: [
+                              IconButton(
+                                color: Colors.white,
+                                onPressed: _toggleSelfie,
+                                icon:
+                                    const FaIcon(FontAwesomeIcons.cameraRotate),
+                              ),
+                              Gaps.v10,
+                              FlashModeWidget(
+                                  cameraController: _cameraController),
+                            ],
+                          ),
                         ),
-                      ),
                       Positioned(
                         bottom: Sizes.size28,
                         width: MediaQuery.of(context).size.width,

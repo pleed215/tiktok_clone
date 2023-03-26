@@ -39,6 +39,12 @@ class _VidePreviewScreenState extends State<VideoPreviewScreen> {
     _initVideo();
   }
 
+  @override
+  void dispose() {
+    _videoPlayerController.dispose();
+    super.dispose();
+  }
+
   Future<void> _onTapSave() async {
     if (_savedVideo) {
       return;
