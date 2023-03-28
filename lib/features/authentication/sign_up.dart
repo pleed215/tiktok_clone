@@ -28,7 +28,7 @@ class AuthItem {
 }
 
 class SignUpScreen extends StatelessWidget {
-  static String routeUrl = "/signup";
+  static String routeUrl = "/";
   static String routeName = "signup_screen";
 
   const SignUpScreen({Key? key}) : super(key: key);
@@ -91,7 +91,9 @@ class SignUpScreen extends StatelessWidget {
                           //           const UsernameScreen(),
                           // ));
                           //context.push(UsernameScreen.routeUrl);
-                          context.pushNamed(UsernameScreen.routeName);
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const UsernameScreen(),
+                          ));
                         },
                       ),
                       AuthButton(
@@ -132,7 +134,7 @@ class SignUpScreen extends StatelessWidget {
                 Gaps.h5,
                 GestureDetector(
                   onTap: () async {
-                    context.push(LogInScreen.routeUrl);
+                    context.pushNamed(LogInScreen.routeName);
                   },
                   child: Text(
                     'Log in',

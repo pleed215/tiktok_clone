@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/inbox/chat_screen.dart';
 
 class DirectMessageScreen extends StatefulWidget {
-  const DirectMessageScreen({Key? key}) : super(key: key);
+  const DirectMessageScreen({
+    Key? key,
+  }) : super(key: key);
+  static String routeName = "chats";
+  static String routeUrl = "/chats";
 
   @override
   State<DirectMessageScreen> createState() => _DirectMessageScreenState();
@@ -81,9 +86,14 @@ class _DirectMessageScreenState extends State<DirectMessageScreen> {
                   _deleteItem(index);
                 },
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const ChatScreen(),
-                  ));
+                  // TODO: id는 하드코딩 되어 있어서 나중에 바꿔줘야 한다.
+                  context.pushNamed(ChatScreen.routeName, params: {
+                    'id': '1',
+                  });
+                  context.push('1');
+                  // Navigator.of(context).push(MaterialPageRoute(
+                  //   builder: (context) => const ChatScreen(),
+                  // ));
                 },
                 leading: const CircleAvatar(
                   radius: 30,

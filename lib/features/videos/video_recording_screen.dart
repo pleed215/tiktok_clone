@@ -19,8 +19,8 @@ enum MediaPermissionStatus {
 }
 
 class VideoRecordingScreen extends StatefulWidget {
-  static String routeName = "video_screen";
-  static String routeUrl = "/";
+  static String routeName = "records";
+  static String routeUrl = "/records";
 
   const VideoRecordingScreen({Key? key}) : super(key: key);
 
@@ -138,7 +138,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   void dispose() {
     _buttonAnimationController.dispose();
     _progressAnimationController.dispose();
-    _cameraController.dispose();
+    if (!_noCamera) _cameraController.dispose();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -252,6 +252,11 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                     alignment: Alignment.center,
                     children: [
                       if (!_noCamera) CameraPreview(_cameraController),
+                      const Positioned(
+                        top: 0,
+                        left: 0,
+                        child: SafeArea(child: CloseButton()),
+                      ),
                       if (!_noCamera)
                         Positioned(
                           right: 0,

@@ -10,7 +10,15 @@ import 'package:tiktok_clone/features/inbox/widgets/chat_widget.dart';
 import '../../common/is_dark.dart';
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({Key? key}) : super(key: key);
+  static const String routeName = 'chat';
+  static const String routeUrl = ':id';
+
+  final String chatId;
+
+  const ChatScreen({
+    Key? key,
+    required this.chatId,
+  }) : super(key: key);
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();

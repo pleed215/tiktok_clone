@@ -1,23 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/discover/discover_screen.dart';
 import 'package:tiktok_clone/features/inbox/inbox_screen.dart';
 import 'package:tiktok_clone/features/user/user_profile_screen.dart';
+import 'package:tiktok_clone/features/videos/video_recording_screen.dart';
 import 'package:tiktok_clone/features/videos/video_timeline_screen.dart';
 
-import '../../common/is_dark.dart';
+import '../is_dark.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
+  static String routeName = "home";
+  final String tab;
+
+  const MainScreen({Key? key, required this.tab}) : super(key: key);
 
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _currentIndex = 4;
+  final List<String> _tabs = [
+    'home',
+    'discover',
+    'xxx',
+    'inbox',
+    'profile',
+  ];
+  late int _currentIndex = _tabs.indexOf(widget.tab);
   final _screens = [
     const VideoTimelineScreen(),
     const DiscoverScreen(),
@@ -29,6 +41,7 @@ class _MainScreenState extends State<MainScreen> {
   ];
 
   void _onTap(int index) {
+    context.go('/${_tabs[index]}');
     setState(() {
       _currentIndex = index;
     });
@@ -139,17 +152,18 @@ class _NavAddButtonState extends State<NavAddButton> {
         _longTapped = true;
       }),
       onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => Scaffold(
-              backgroundColor: widget.inverted ? Colors.black : Colors.white,
-              appBar: AppBar(
-                title: const Text('Video Records'),
-              ),
-            ),
-            fullscreenDialog: true,
-          ),
-        );
+        context.pushNamed(VideoRecordingScreen.routeName);
+        // Navigator.of(context).push(
+        //   MaterialPageRoute(
+        //     builder: (context) => Scaffold(
+        //       backgroundColor: widget.inverted ? Colors.black : Colors.white,
+        //       appBar: AppBar(
+        //         title: const Text('Video Records'),
+        //       ),
+        //     ),
+        //     fullscreenDialog: true,
+        //   ),
+        // );
       },
       child: AnimatedRotation(
         turns: _longTapped ? 10.0 : 0.0,

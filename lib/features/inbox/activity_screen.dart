@@ -20,6 +20,9 @@ List<ActivityMenu> activityMenus = [
 ];
 
 class ActivityScreen extends StatefulWidget {
+  static const String routeName = "activity";
+  static const String routeUrl = "/activity";
+
   const ActivityScreen({Key? key}) : super(key: key);
 
   @override

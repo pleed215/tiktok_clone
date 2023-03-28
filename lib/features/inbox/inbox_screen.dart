@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/inbox/activity_screen.dart';
 import 'package:tiktok_clone/features/inbox/direct_message_screen.dart';
@@ -43,11 +44,12 @@ class InboxScreen extends StatelessWidget {
               color: Colors.black,
             ),
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const ActivityScreen(),
-                ),
-              );
+              context.pushNamed(ActivityScreen.routeName);
+              // Navigator.of(context).push(
+              //   MaterialPageRoute(
+              //     builder: (context) => const ActivityScreen(),
+              //   ),
+              // );
             },
           ),
           Container(height: Sizes.size1, color: Colors.grey.shade200),

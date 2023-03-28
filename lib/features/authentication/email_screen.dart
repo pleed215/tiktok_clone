@@ -88,7 +88,7 @@ class _EmailScreenState extends State<EmailScreen> {
               Gaps.v40,
               Text(
                 "What is your email, ${widget.args.username}?",
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: Sizes.size24, fontWeight: FontWeight.w600),
               ),
               Gaps.v8,
