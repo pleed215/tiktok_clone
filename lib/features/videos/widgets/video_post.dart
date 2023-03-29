@@ -28,7 +28,7 @@ class _VideoPostState extends State<VideoPost>
       VideoPlayerController.asset("assets/videos/sample.mov");
   bool _isPlaying = true;
   late final AnimationController _animationController;
-  late bool _isMuted = VideoConfig.of(context).autoMute;
+  late bool _isMuted = false;
 
   void _onVideoChange() {
     if (_videoPlayerController.value.isInitialized) {
@@ -69,12 +69,18 @@ class _VideoPostState extends State<VideoPost>
       value: 1.5,
       duration: const Duration(milliseconds: 300),
     );
+    videoConfig.addListener(() {
+      setState(() {
+        _isMuted = videoConfig.autoMute;
+      });
+    });
     _initVideoPlayer();
   }
 
   @override
   void dispose() {
     _videoPlayerController.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
