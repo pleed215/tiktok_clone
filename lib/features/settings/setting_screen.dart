@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/common/widgets/video_configuration/video_config.dart';
 import 'package:tiktok_clone/constants/breakpoints.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -29,6 +30,18 @@ class _SettingScreenState extends State<SettingScreen> {
             alignment: Alignment.topCenter,
             child: ListView(
               children: [
+                SwitchListTile.adaptive(
+                  onChanged: (value) {
+                    setState(() {
+                      VideoConfig.of(context).autoMute = value;
+                    });
+                  },
+                  value: VideoConfig.of(context).autoMute,
+                  title: const Text("Enable auto mute?"),
+                  subtitle: const Text(
+                    "Videos will be muted by default",
+                  ),
+                ),
                 ListTile(
                   onTap: () => showAboutDialog(
                       context: context,

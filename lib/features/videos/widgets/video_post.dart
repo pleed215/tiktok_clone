@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/common/widgets/video_configuration/video_config.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_comment_modal.dart';
@@ -27,7 +28,7 @@ class _VideoPostState extends State<VideoPost>
       VideoPlayerController.asset("assets/videos/sample.mov");
   bool _isPlaying = true;
   late final AnimationController _animationController;
-  bool _isMuted = false;
+  late bool _isMuted = VideoConfig.of(context).autoMute;
 
   void _onVideoChange() {
     if (_videoPlayerController.value.isInitialized) {
