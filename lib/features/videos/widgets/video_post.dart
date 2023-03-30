@@ -1,15 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tiktok_clone/common/widgets/video_configuration/video_config.dart';
-import 'package:tiktok_clone/constants/sizes.dart';
-import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
+import 'package:provider/provider.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_comment_modal.dart';
 import 'package:tiktok_clone/generated/l10n.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
+import '../../../common/widgets/video_configuration/video_config.dart';
 import '../../../constants/gaps.dart';
+import '../../../constants/sizes.dart';
+import 'video_button.dart';
 
 class VideoPost extends StatefulWidget {
   const VideoPost(
@@ -43,6 +44,7 @@ class _VideoPostState extends State<VideoPost>
     _videoPlayerController.setVolume(_isMuted ? 0.8 : 0.0);
     setState(() {
       _isMuted = !_isMuted;
+      context.read<VideoConfig>().toggleIsMuted();
     });
   }
 
@@ -69,11 +71,7 @@ class _VideoPostState extends State<VideoPost>
       value: 1.5,
       duration: const Duration(milliseconds: 300),
     );
-    videoConfig.addListener(() {
-      setState(() {
-        _isMuted = videoConfig.autoMute;
-      });
-    });
+
     _initVideoPlayer();
   }
 
@@ -130,7 +128,8 @@ class _VideoPostState extends State<VideoPost>
           child: GestureDetector(
             onTap: _toggleVolume,
             child: FaIcon(
-              _isMuted
+              context.watch<VideoConfig>().isMuted
+                  //_isMuted
                   ? FontAwesomeIcons.volumeXmark
                   : FontAwesomeIcons.volumeHigh,
               color: Colors.white,

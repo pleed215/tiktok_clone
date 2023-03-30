@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:tiktok_clone/common/widgets/video_configuration/video_config.dart';
 import 'package:tiktok_clone/constants/breakpoints.dart';
 
@@ -30,17 +31,24 @@ class _SettingScreenState extends State<SettingScreen> {
             alignment: Alignment.topCenter,
             child: ListView(
               children: [
-                AnimatedBuilder(
-                  animation: videoConfig,
-                  builder: (context, child) => SwitchListTile.adaptive(
-                    onChanged: (value) {
-                      videoConfig.toggleAutoMute();
-                    },
-                    value: videoConfig.autoMute,
-                    title: const Text("Enable auto mute?"),
-                    subtitle: const Text(
-                      "Videos will be muted by default",
-                    ),
+                SwitchListTile.adaptive(
+                  onChanged: (isChecked) {
+                    context.read<VideoConfig>().toggleIsMuted();
+                  },
+                  value: context.watch<VideoConfig>().isMuted,
+                  title: const Text("Enable auto mute?"),
+                  subtitle: const Text(
+                    "Videos will be muted by default",
+                  ),
+                ),
+                SwitchListTile.adaptive(
+                  onChanged: (isChecked) {
+                    context.read<VideoConfig>().toggleDarkMode();
+                  },
+                  value: context.watch<VideoConfig>().isDarkMode,
+                  title: const Text("Toggle dark mode"),
+                  subtitle: const Text(
+                    "If your system is set to dark mode, this value not effect anything.",
                   ),
                 ),
                 ListTile(
