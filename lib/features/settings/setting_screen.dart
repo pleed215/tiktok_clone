@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:tiktok_clone/common/widgets/video_configuration/video_config.dart';
 import 'package:tiktok_clone/constants/breakpoints.dart';
+import 'package:tiktok_clone/features/videos/view_models/playback_config_view_model.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({Key? key}) : super(key: key);
@@ -33,9 +33,9 @@ class _SettingScreenState extends State<SettingScreen> {
               children: [
                 SwitchListTile.adaptive(
                   onChanged: (isChecked) {
-                    context.read<VideoConfig>().toggleIsMuted();
+                    context.read<PlaybackConfigViewModel>().setMuted(isChecked);
                   },
-                  value: context.watch<VideoConfig>().isMuted,
+                  value: context.watch<PlaybackConfigViewModel>().muted,
                   title: const Text("Enable auto mute?"),
                   subtitle: const Text(
                     "Videos will be muted by default",
@@ -43,12 +43,14 @@ class _SettingScreenState extends State<SettingScreen> {
                 ),
                 SwitchListTile.adaptive(
                   onChanged: (isChecked) {
-                    context.read<VideoConfig>().toggleDarkMode();
+                    context
+                        .read<PlaybackConfigViewModel>()
+                        .setAutoplay(isChecked);
                   },
-                  value: context.watch<VideoConfig>().isDarkMode,
-                  title: const Text("Toggle dark mode"),
+                  value: context.watch<PlaybackConfigViewModel>().autoplay,
+                  title: const Text("Enable autoplay"),
                   subtitle: const Text(
-                    "If your system is set to dark mode, this value not effect anything.",
+                    "This option will always auto play videos.",
                   ),
                 ),
                 ListTile(
