@@ -1,8 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
-import 'package:tiktok_clone/features/videos/view_models/playback_config_view_model.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_comment_modal.dart';
 import 'package:tiktok_clone/generated/l10n.dart';
 import 'package:video_player/video_player.dart';
@@ -52,7 +50,7 @@ class _VideoPostState extends State<VideoPost>
     if (kIsWeb) {
       await _videoPlayerController.setVolume(0);
       setState(() {
-        _isMuted = context.read<PlaybackConfigViewModel>().muted;
+        _isMuted = false;
       });
     }
     setState(() {});
@@ -101,7 +99,7 @@ class _VideoPostState extends State<VideoPost>
         if (info.visibleFraction == 1.0 &&
             _isPlaying &&
             !_videoPlayerController.value.isPlaying) {
-          final autoplay = context.read<PlaybackConfigViewModel>().autoplay;
+          final autoplay = false;
           if (autoplay) {
             _videoPlayerController.play();
           } else {
