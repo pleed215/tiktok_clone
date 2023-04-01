@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gallery_saver/gallery_saver.dart';
+import 'package:tiktok_clone/features/videos/view_models/timeline_view_model.dart';
 import 'package:video_player/video_player.dart';
 
-class VideoPreviewScreen extends StatefulWidget {
+class VideoPreviewScreen extends ConsumerStatefulWidget {
   final XFile video;
   final bool isPicked;
 
@@ -17,10 +19,10 @@ class VideoPreviewScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<VideoPreviewScreen> createState() => _VidePreviewScreenState();
+  VideoPreviewScreenState createState() => VideoPreviewScreenState();
 }
 
-class _VidePreviewScreenState extends State<VideoPreviewScreen> {
+class VideoPreviewScreenState extends ConsumerState<VideoPreviewScreen> {
   late final VideoPlayerController _videoPlayerController;
   bool _savedVideo = false;
 
@@ -55,6 +57,10 @@ class _VidePreviewScreenState extends State<VideoPreviewScreen> {
     setState(() {});
   }
 
+  void _onTapUpload() {
+    ref.read(timelineProvider.notifier).uploadVideo();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,12 +69,20 @@ class _VidePreviewScreenState extends State<VideoPreviewScreen> {
         actions: [
           if (!widget.isPicked)
             IconButton(
-                onPressed: _onTapSave,
-                icon: FaIcon(
-                  _savedVideo
-                      ? FontAwesomeIcons.check
-                      : FontAwesomeIcons.download,
-                ))
+              onPressed: _onTapSave,
+              icon: FaIcon(
+                _savedVideo
+                    ? FontAwesomeIcons.check
+                    : FontAwesomeIcons.download,
+              ),
+            ),
+          IconButton(
+            onPressed:
+                ref.watch(timelineProvider).isLoading ? () {} : _onTapUpload,
+            icon: ref.watch(timelineProvider).isLoading
+                ? const CircularProgressIndicator()
+                : const FaIcon(FontAwesomeIcons.cloudArrowUp),
+          )
         ],
       ),
       body: _videoPlayerController.value.isInitialized

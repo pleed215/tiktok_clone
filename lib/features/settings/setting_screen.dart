@@ -1,21 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/breakpoints.dart';
+import 'package:tiktok_clone/features/videos/view_models/playback_config_view_model.dart';
 
-class SettingScreen extends StatefulWidget {
+class SettingScreen extends ConsumerWidget {
   const SettingScreen({Key? key}) : super(key: key);
 
   @override
-  State<SettingScreen> createState() => _SettingScreenState();
-}
-
-class _SettingScreenState extends State<SettingScreen> {
-  bool _isChecked = false;
-  bool _isSwitchOn = false;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Localizations.override(
       locale: Locale('es'),
       context: context,
@@ -30,16 +24,24 @@ class _SettingScreenState extends State<SettingScreen> {
             child: ListView(
               children: [
                 SwitchListTile.adaptive(
-                  onChanged: (isChecked) {},
-                  value: false,
+                  onChanged: (isChecked) {
+                    ref
+                        .read(playbackConfigProvider.notifier)
+                        .setMuted(isChecked);
+                  },
+                  value: ref.watch(playbackConfigProvider).muted,
                   title: const Text("Enable auto mute?"),
                   subtitle: const Text(
                     "Videos will be muted by default",
                   ),
                 ),
                 SwitchListTile.adaptive(
-                  onChanged: (isChecked) {},
-                  value: false,
+                  onChanged: (isChecked) {
+                    ref
+                        .read(playbackConfigProvider.notifier)
+                        .setAutoplay(isChecked);
+                  },
+                  value: ref.watch(playbackConfigProvider).autoplay,
                   title: const Text("Enable autoplay"),
                   subtitle: const Text(
                     "This option will always auto play videos.",
@@ -66,32 +68,18 @@ class _SettingScreenState extends State<SettingScreen> {
                         lastDate: DateTime.now(),
                       );
                     }),
-                CupertinoSwitch(
-                    value: _isChecked,
-                    onChanged: (value) {
-                      setState(() {
-                        _isSwitchOn = value;
-                      });
-                    }),
+                CupertinoSwitch(value: false, onChanged: (value) {}),
                 CheckboxListTile(
-                    value: _isChecked,
+                    value: false,
                     checkColor: Colors.white,
                     activeColor: Theme.of(context).primaryColor,
                     checkboxShape: const CircleBorder(),
                     title: const Text("helllo"),
-                    onChanged: (value) {
-                      setState(() {
-                        _isChecked = value!;
-                      });
-                    }),
+                    onChanged: (value) {}),
                 SwitchListTile.adaptive(
-                  value: _isSwitchOn,
+                  value: false,
                   title: const Text("Hello"),
-                  onChanged: (value) {
-                    setState(() {
-                      _isSwitchOn = value;
-                    });
-                  },
+                  onChanged: (value) {},
                 ),
                 ListTile(
                     title: const Text("Log out(ios)"),

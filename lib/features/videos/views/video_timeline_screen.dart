@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tiktok_clone/features/videos/view_models/timeline_view_model.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_post.dart';
 
 const colors = [
@@ -37,14 +39,14 @@ final hugeContainer = [
     ),
 ];
 
-class VideoTimelineScreen extends StatefulWidget {
+class VideoTimelineScreen extends ConsumerStatefulWidget {
   const VideoTimelineScreen({Key? key}) : super(key: key);
 
   @override
-  State<VideoTimelineScreen> createState() => _VideoTimelineScreenState();
+  VideoTimelineScreenState createState() => VideoTimelineScreenState();
 }
 
-class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
+class VideoTimelineScreenState extends ConsumerState<VideoTimelineScreen> {
   int _currentItemLength = 5;
   final _pageController = PageController();
 
@@ -65,32 +67,46 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      displacement: 50,
-      edgeOffset: 10,
-      backgroundColor: Colors.white.withOpacity(0.1),
-      color: Theme.of(context).primaryColor,
-      onRefresh: _onRefresh,
-      child: PageView.builder(
-        controller: _pageController,
-        scrollDirection: Axis.vertical,
-        itemCount: _currentItemLength,
-        onPageChanged: (value) {
-          if (_currentItemLength - value <= 2 && value % 5 == 3) {
-            _pageController.animateTo(0,
-                duration: const Duration(
-                  milliseconds: 1000,
-                ),
-                curve: Curves.linearToEaseOut);
-            setState(() {
-              _currentItemLength += 5;
-            });
-          }
-        },
-        itemBuilder: (context, index) {
-          return VideoPost(onVideoFinished: _onVideoPlayFinished, index: index);
-        },
-      ),
-    );
+    return ref.watch(timelineProvider).when(
+          loading: () => const Center(
+            child: CircularProgressIndicator.adaptive(),
+          ),
+          error: (error, stackTrace) => Center(
+            child: Text(
+              "Could not load videos: $error",
+              style: const TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ),
+          data: (videos) => RefreshIndicator(
+            displacement: 50,
+            edgeOffset: 10,
+            backgroundColor: Colors.white.withOpacity(0.1),
+            color: Theme.of(context).primaryColor,
+            onRefresh: _onRefresh,
+            child: PageView.builder(
+              controller: _pageController,
+              scrollDirection: Axis.vertical,
+              itemCount: videos.length,
+              onPageChanged: (value) {
+                if (_currentItemLength - value <= 2 && value % 5 == 3) {
+                  _pageController.animateTo(0,
+                      duration: const Duration(
+                        milliseconds: 1000,
+                      ),
+                      curve: Curves.linearToEaseOut);
+                  setState(() {
+                    _currentItemLength += 5;
+                  });
+                }
+              },
+              itemBuilder: (context, index) {
+                return VideoPost(
+                    onVideoFinished: _onVideoPlayFinished, index: index);
+              },
+            ),
+          ),
+        );
   }
 }

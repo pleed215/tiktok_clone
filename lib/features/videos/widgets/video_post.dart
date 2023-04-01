@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/features/videos/view_models/playback_config_view_model.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_comment_modal.dart';
 import 'package:tiktok_clone/generated/l10n.dart';
 import 'package:video_player/video_player.dart';
@@ -10,7 +12,7 @@ import '../../../constants/gaps.dart';
 import '../../../constants/sizes.dart';
 import 'video_button.dart';
 
-class VideoPost extends StatefulWidget {
+class VideoPost extends ConsumerStatefulWidget {
   const VideoPost(
       {Key? key, required this.index, required this.onVideoFinished})
       : super(key: key);
@@ -18,16 +20,16 @@ class VideoPost extends StatefulWidget {
   final int index;
 
   @override
-  State<VideoPost> createState() => _VideoPostState();
+  VideoPostState createState() => VideoPostState();
 }
 
-class _VideoPostState extends State<VideoPost>
+class VideoPostState extends ConsumerState<VideoPost>
     with SingleTickerProviderStateMixin {
   final _videoPlayerController =
       VideoPlayerController.asset("assets/videos/sample.mov");
   bool _isPlaying = true;
   late final AnimationController _animationController;
-  late bool _isMuted = false;
+  late bool _isMuted = ref.read(playbackConfigProvider).muted;
 
   void _onVideoChange() {
     if (_videoPlayerController.value.isInitialized) {
@@ -99,7 +101,7 @@ class _VideoPostState extends State<VideoPost>
         if (info.visibleFraction == 1.0 &&
             _isPlaying &&
             !_videoPlayerController.value.isPlaying) {
-          final autoplay = false;
+          final autoplay = ref.watch(playbackConfigProvider).autoplay;
           if (autoplay) {
             _videoPlayerController.play();
           } else {
