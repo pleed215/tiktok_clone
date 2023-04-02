@@ -1,9 +1,11 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tiktok_clone/features/videos/view_models/playback_config_view_model.dart';
+import 'package:tiktok_clone/firebase_options.dart';
 import 'package:tiktok_clone/router.dart';
 
 import 'constants/sizes.dart';
@@ -14,6 +16,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   final preferences = await SharedPreferences.getInstance();
   final repository = PlaybackConfigRepository(preferences);
@@ -28,15 +34,15 @@ void main() async {
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // return ChangeNotifierProvider(
     //   create: (context) => VideoConfig(),
     return MaterialApp.router(
-      routerConfig: router,
+      routerConfig: ref.watch(routerProvider),
       title: 'Flutter Demo',
       localizationsDelegates: const [
         S.delegate,
