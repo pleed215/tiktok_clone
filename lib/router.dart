@@ -5,7 +5,7 @@ import 'package:tiktok_clone/common/widgets/main_screen.dart';
 import 'package:tiktok_clone/features/authentication/email_screen.dart';
 import 'package:tiktok_clone/features/authentication/log_in.dart';
 import 'package:tiktok_clone/features/authentication/respository/authentication_repository.dart';
-import 'package:tiktok_clone/features/authentication/sign_up.dart';
+import 'package:tiktok_clone/features/authentication/signup_screen.dart';
 import 'package:tiktok_clone/features/authentication/username_screen.dart';
 import 'package:tiktok_clone/features/inbox/activity_screen.dart';
 import 'package:tiktok_clone/features/inbox/chat_screen.dart';
@@ -15,6 +15,7 @@ import 'package:tiktok_clone/features/user/user_profile_screen.dart';
 import 'package:tiktok_clone/features/videos/views/video_recording_screen.dart';
 
 final routerProvider = Provider((ref) {
+  // ref.watch(authStateStream);
   return GoRouter(
     initialLocation: "/home",
     redirect: (context, state) {
