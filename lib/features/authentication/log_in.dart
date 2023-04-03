@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
-import 'package:tiktok_clone/features/authentication/login_form_screen.dart';
+import 'package:tiktok_clone/features/authentication/view_models/social_sign_view_model.dart';
 import 'package:tiktok_clone/features/authentication/widgets/auth_button.dart';
 import 'package:tiktok_clone/generated/l10n.dart';
 
-class LogInScreen extends StatelessWidget {
+import 'login_form_screen.dart';
+
+class LogInScreen extends ConsumerWidget {
   static String routeUrl = "/login";
   static String routeName = "login_screen";
 
   const LogInScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -54,9 +57,13 @@ class LogInScreen extends StatelessWidget {
               ),
               Gaps.v16,
               AuthButton(
-                icon: const FaIcon(FontAwesomeIcons.facebook),
-                text: "Continue with Facebook",
-                onTap: () {},
+                icon: const FaIcon(FontAwesomeIcons.github),
+                text: "Continue with Github",
+                onTap: () {
+                  ref
+                      .read(socialSignProvider.notifier)
+                      .loginWithGithub(context);
+                },
               ),
               Gaps.v16,
               AuthButton(

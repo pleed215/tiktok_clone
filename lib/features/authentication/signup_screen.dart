@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/log_in.dart';
 import 'package:tiktok_clone/features/authentication/username_screen.dart';
+import 'package:tiktok_clone/features/authentication/view_models/social_sign_view_model.dart';
 import 'package:tiktok_clone/features/authentication/widgets/auth_button.dart';
 import "package:tiktok_clone/generated/l10n.dart";
 
@@ -27,14 +29,14 @@ class AuthItem {
   }
 }
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends ConsumerWidget {
   static String routeUrl = "/";
   static String routeName = "signup_screen";
 
   const SignUpScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     S.load(Locale('ko'));
     return OrientationBuilder(builder: (context, orientation) {
       return Scaffold(
@@ -97,9 +99,13 @@ class SignUpScreen extends StatelessWidget {
                         },
                       ),
                       AuthButton(
-                        icon: const FaIcon(FontAwesomeIcons.facebook),
-                        text: "Continue with Facebook",
-                        onTap: () {},
+                        icon: const FaIcon(FontAwesomeIcons.github),
+                        text: "Continue with Github",
+                        onTap: () {
+                          ref
+                              .read(socialSignProvider.notifier)
+                              .loginWithGithub(context);
+                        },
                       ),
                       AuthButton(
                         icon: const FaIcon(FontAwesomeIcons.apple),

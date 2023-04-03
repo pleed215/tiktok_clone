@@ -11,7 +11,7 @@ void showFirebaseErrorOnSnackBar(BuildContext context, Object? exception) {
       label: "Ok",
       textColor: Colors.white,
     ),
-    duration: const Duration(milliseconds: 2000),
+    duration: const Duration(milliseconds: 5000),
     backgroundColor: Colors.redAccent,
     showCloseIcon: true,
     content: Text(
