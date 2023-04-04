@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/common/widgets/show_firebase_error.dart';
 import 'package:tiktok_clone/features/authentication/respository/authentication_repository.dart';
 import 'package:tiktok_clone/features/onboarding/interests_screen.dart';
+import 'package:tiktok_clone/features/user/view_model/users_view_model.dart';
 
 class SignupViewModel extends AsyncNotifier<void> {
   late final AuthenticationRepository _authRepo;
@@ -20,18 +21,24 @@ class SignupViewModel extends AsyncNotifier<void> {
     final formState = ref.read(signUpFormStateProvider.notifier).state;
 
     state = await AsyncValue.guard(
-      () async => await _authRepo.emailSignUp(
-          email: formState['email'], password: formState['password']),
+      () async {
+        final userCredential = await _authRepo.emailSignUp(
+            email: formState['email'], password: formState['password']);
+        if (userCredential.user != null) {
+          final users = ref.read(usersProvider.notifier);
+          await users.createProfile(userCredential);
+        }
+      },
     );
 
-    if (state.hasError) {
-      if (context.mounted) {
-        showFirebaseErrorOnSnackBar(context, state.error);
-      }
-      return;
-    }
     if (context.mounted) {
-      context.goNamed(InterestsScreen.routeName);
+      if (state.hasError) {
+        if (context.mounted) {
+          showFirebaseErrorOnSnackBar(context, state.error);
+        }
+      } else {
+        context.goNamed(InterestsScreen.routeName);
+      }
     }
   }
 }

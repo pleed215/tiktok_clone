@@ -90,6 +90,12 @@ class BirthdayScreenState extends ConsumerState<BirthdayScreen> {
             FormButton(
               disabled: ref.watch(signUpProvider).isLoading,
               onTap: () {
+                final prevFormState =
+                    ref.read(signUpFormStateProvider.notifier).state;
+                ref.read(signUpFormStateProvider.notifier).state = {
+                  ...prevFormState,
+                  'birthday': DateTime.parse(_birthdayController.value.text),
+                };
                 ref.read(signUpProvider.notifier).signUp(context);
                 // Navigator.of(context).pushAndRemoveUntil(
                 //   MaterialPageRoute(
