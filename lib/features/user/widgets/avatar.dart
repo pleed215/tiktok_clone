@@ -32,6 +32,7 @@ class Avatar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isLoading = ref.watch(avatarProvider).isLoading;
+    print(isLoading);
     return GestureDetector(
       onTap: isLoading ? null : () => _onAvatarTap(ref),
       child: isLoading

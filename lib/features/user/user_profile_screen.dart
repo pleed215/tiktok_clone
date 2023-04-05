@@ -9,11 +9,13 @@ import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/settings/setting_screen.dart';
 import 'package:tiktok_clone/features/user/view_model/users_view_model.dart';
 import 'package:tiktok_clone/features/user/widgets/avatar.dart';
+import 'package:tiktok_clone/features/user/widgets/bio_update_screen.dart';
 import 'package:tiktok_clone/features/user/widgets/follow_info.dart';
 import 'package:tiktok_clone/features/user/widgets/persistent_tab_bar.dart';
 import 'package:tiktok_clone/features/user/widgets/profile_grid_item.dart';
 
 import '../../common/is_dark.dart';
+import 'widgets/link_update_screen.dart';
 
 final myRandom = Random();
 
@@ -51,11 +53,32 @@ class UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                     return [
                       SliverAppBar(
                         centerTitle: true,
-                        title: const Text(
-                          "FIFA",
+                        title: Text(
+                          data.name,
                           textAlign: TextAlign.center,
                         ),
                         actions: [
+                          IconButton(
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const BioUpdateScreen(),
+                                ));
+                              },
+                              icon: const FaIcon(
+                                FontAwesomeIcons.bookOpenReader,
+                                size: Sizes.size20,
+                              )),
+                          IconButton(
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      const LinkUpdateScreen(),
+                                ));
+                              },
+                              icon: const FaIcon(
+                                FontAwesomeIcons.link,
+                                size: Sizes.size20,
+                              )),
                           IconButton(
                             onPressed: () => _onTapGear(context),
                             icon: const FaIcon(FontAwesomeIcons.gear,
@@ -222,27 +245,29 @@ class UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                                 ),
                               ),
                               Gaps.v14,
-                              const Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: Sizes.size32),
-                                child: Text(
-                                  "When the kraken falls for la marsa beach, all wenchs break proud, warm lagoons.Onuss studere in domesticus brigantium!",
-                                  textAlign: TextAlign.center,
+                              if (data.bio.isNotEmpty)
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: Sizes.size32),
+                                  child: Text(
+                                    data.bio,
+                                    textAlign: TextAlign.center,
+                                  ),
                                 ),
-                              ),
                               Gaps.v14,
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  FaIcon(FontAwesomeIcons.link,
-                                      size: Sizes.size12),
-                                  Gaps.h4,
-                                  Text('https://wolbae.co.kr',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ))
-                                ],
-                              ),
+                              if (data.link.isNotEmpty)
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const FaIcon(FontAwesomeIcons.link,
+                                        size: Sizes.size12),
+                                    Gaps.h4,
+                                    Text(data.link,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ))
+                                  ],
+                                ),
                               Gaps.v5,
                             ],
                           ),
