@@ -70,7 +70,9 @@ class VideoPreviewScreenState extends ConsumerState<VideoPreviewScreen> {
     }
     if (context.mounted) {
       showSuccessMessage(context, "Video upload completed");
-      context.pushReplacement('/home');
+      // context.pushReplacement('/home');
+      context.pop();
+      context.pop();
     }
   }
 

@@ -67,6 +67,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '42800438877',
     projectId: 'clone-tiktok-pleed0215',
     storageBucket: 'clone-tiktok-pleed0215.appspot.com',
+    androidClientId: '42800438877-ije5qu03snqb5sdlr4jag5k568hbojoe.apps.googleusercontent.com',
     iosClientId: '42800438877-380pql29ts0nmff9dfantcivt6cng0ml.apps.googleusercontent.com',
     iosBundleId: 'com.pleed0215.tiktokClone',
   );
@@ -77,6 +78,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '42800438877',
     projectId: 'clone-tiktok-pleed0215',
     storageBucket: 'clone-tiktok-pleed0215.appspot.com',
+    androidClientId: '42800438877-ije5qu03snqb5sdlr4jag5k568hbojoe.apps.googleusercontent.com',
     iosClientId: '42800438877-g74din4mdbrvpd60le92r4l7jc6sfk1k.apps.googleusercontent.com',
     iosBundleId: 'com.example.tiktokClone',
   );
