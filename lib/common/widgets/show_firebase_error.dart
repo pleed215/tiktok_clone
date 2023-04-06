@@ -23,3 +23,18 @@ void showFirebaseErrorOnSnackBar(BuildContext context, Object? exception) {
   );
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
+
+void showSuccessMessage(BuildContext context, String message) {
+  final snackBar = SnackBar(
+    duration: const Duration(milliseconds: 5000),
+    backgroundColor: Theme.of(context).primaryColor,
+    showCloseIcon: true,
+    content: Text(
+      message,
+      style: const TextStyle(
+        color: Colors.white,
+      ),
+    ),
+  );
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+}

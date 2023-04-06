@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gallery_saver/gallery_saver.dart';
-import 'package:tiktok_clone/features/videos/view_models/timeline_view_model.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tiktok_clone/common/widgets/show_firebase_error.dart';
+import 'package:tiktok_clone/features/videos/view_models/upload_video_view_model.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPreviewScreen extends ConsumerStatefulWidget {
@@ -57,8 +59,19 @@ class VideoPreviewScreenState extends ConsumerState<VideoPreviewScreen> {
     setState(() {});
   }
 
-  void _onTapUpload() {
-    ref.read(timelineProvider.notifier).uploadVideo();
+  void _onTapUpload() async {
+    try {
+      await ref.read(uploadVideoProvider.notifier).uploadVideo(
+            File(widget.video.path),
+          );
+    } catch (e) {
+      showFirebaseErrorOnSnackBar(context, e);
+      return;
+    }
+    if (context.mounted) {
+      showSuccessMessage(context, "Video upload completed");
+      context.pushReplacement('/home');
+    }
   }
 
   @override
@@ -78,8 +91,8 @@ class VideoPreviewScreenState extends ConsumerState<VideoPreviewScreen> {
             ),
           IconButton(
             onPressed:
-                ref.watch(timelineProvider).isLoading ? () {} : _onTapUpload,
-            icon: ref.watch(timelineProvider).isLoading
+                ref.watch(uploadVideoProvider).isLoading ? () {} : _onTapUpload,
+            icon: ref.watch(uploadVideoProvider).isLoading
                 ? const CircularProgressIndicator()
                 : const FaIcon(FontAwesomeIcons.cloudArrowUp),
           )

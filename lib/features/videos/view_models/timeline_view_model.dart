@@ -6,7 +6,7 @@ import '../models/video_model.dart';
 
 class TimelineViewModel extends AsyncNotifier<List<VideoModel>> {
   List<VideoModel> _list = [
-    VideoModel(title: "1This is my cat haru, she is horrible and very cute."),
+    VideoModel.dummy(),
   ];
 
   @override
@@ -19,7 +19,7 @@ class TimelineViewModel extends AsyncNotifier<List<VideoModel>> {
   Future<void> uploadVideo() async {
     state = const AsyncValue.loading();
     await Future.delayed(const Duration(seconds: 5));
-    final newVideo = VideoModel(title: "${DateTime.now()}");
+    final newVideo = VideoModel.dummy();
     //_list = [..._list, newVideo];
     _list.add(newVideo);
     state = AsyncValue.data(_list);
