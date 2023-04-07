@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/features/videos/models/video_model.dart';
 import 'package:tiktok_clone/features/videos/view_models/playback_config_view_model.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_comment_modal.dart';
 import 'package:tiktok_clone/generated/l10n.dart';
@@ -14,10 +16,14 @@ import 'video_button.dart';
 
 class VideoPost extends ConsumerStatefulWidget {
   const VideoPost(
-      {Key? key, required this.index, required this.onVideoFinished})
+      {Key? key,
+      required this.index,
+      required this.onVideoFinished,
+      required this.videoData})
       : super(key: key);
   final Function onVideoFinished;
   final int index;
+  final VideoModel videoData;
 
   @override
   VideoPostState createState() => VideoPostState();
@@ -25,8 +31,8 @@ class VideoPost extends ConsumerStatefulWidget {
 
 class VideoPostState extends ConsumerState<VideoPost>
     with SingleTickerProviderStateMixin {
-  final _videoPlayerController =
-      VideoPlayerController.asset("assets/videos/sample.mov");
+  late final _videoPlayerController =
+      VideoPlayerController.network(widget.videoData.fileUrl);
   bool _isPlaying = true;
   late final AnimationController _animationController;
   late bool _isMuted = ref.read(playbackConfigProvider).muted;
@@ -82,7 +88,7 @@ class VideoPostState extends ConsumerState<VideoPost>
   }
 
   void _toggleVideoState() {
-    if (_isPlaying) {
+    if (_isPlaying && _videoPlayerController.value.isInitialized) {
       _videoPlayerController.pause();
       _animationController.reverse();
     } else {
@@ -120,8 +126,9 @@ class VideoPostState extends ConsumerState<VideoPost>
         Positioned.fill(
             child: _videoPlayerController.value.isInitialized
                 ? VideoPlayer(_videoPlayerController)
-                : Container(
-                    color: Colors.teal,
+                : Image.network(
+                    widget.videoData.thumbnailUrl,
+                    fit: BoxFit.cover,
                   )),
         Positioned.fill(
           child: GestureDetector(
@@ -171,10 +178,10 @@ class VideoPostState extends ConsumerState<VideoPost>
           left: 10,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               Text(
-                "@Hello",
-                style: TextStyle(
+                widget.videoData.creator,
+                style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: Sizes.size20,
@@ -182,8 +189,7 @@ class VideoPostState extends ConsumerState<VideoPost>
               ),
               Gaps.v20,
               CollapsableText(
-                text:
-                    "This is my cat, Haru! She is really cute and horrible cat. Don't touch her, or she'll bite you.",
+                text: widget.videoData.description,
               ),
             ],
           ),
@@ -193,22 +199,22 @@ class VideoPostState extends ConsumerState<VideoPost>
           right: 10,
           child: Column(
             children: [
-              const CircleAvatar(
+              CircleAvatar(
                 radius: 25,
                 foregroundImage: NetworkImage(
-                  'https://avatars.githubusercontent.com/u/101641035?v=4',
-                ),
-                child: Text('Haru'),
+                    "https://firebasestorage.googleapis.com/v0/b/clone-tiktok-"
+                    "pleed0215.appspot.com/o/avatars%2F${widget.videoData.creatorUid}?alt=media&sometrick=${DateTime.now()}"),
+                child: Text(widget.videoData.creator),
               ),
               Gaps.v24,
               VideoButton(
                 icon: FontAwesomeIcons.solidHeart,
-                text: S.of(context).likeCount(2900),
+                text: S.of(context).likeCount(widget.videoData.likes),
               ),
               Gaps.v24,
               VideoButton(
                 icon: FontAwesomeIcons.solidComment,
-                text: S.of(context).commentCount(3300000),
+                text: S.of(context).commentCount(widget.videoData.comments),
                 onTap: () {
                   // if(_videoPlayerController.value.isPlaying) {
                   // _toggleVideoState();

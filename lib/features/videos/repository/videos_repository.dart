@@ -10,8 +10,6 @@ class VideosRepository {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
-// TODO: Upload video file.
-// TODO: Create video document.
   UploadTask uploadVideo(String userId, File video) {
     final fileRef = _storage.ref().child(
         '/videos/$userId/${DateTime.now().millisecondsSinceEpoch.toString()}');
@@ -20,6 +18,13 @@ class VideosRepository {
 
   Future<void> saveVideo(VideoModel data) async {
     await _db.collection('videos').add(data.toMap());
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> fetchVideos() {
+    return _db
+        .collection('videos')
+        .orderBy("createdAt", descending: true)
+        .get();
   }
 }
 
