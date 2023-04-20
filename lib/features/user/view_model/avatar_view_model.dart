@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tiktok_clone/features/authentication/respository/authentication_repository.dart';
+import 'package:tiktok_clone/features/authentication/repository/authentication_repository.dart';
 import 'package:tiktok_clone/features/user/repository/user_repository.dart';
 import 'package:tiktok_clone/features/user/view_model/users_view_model.dart';
 

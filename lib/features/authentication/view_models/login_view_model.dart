@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tiktok_clone/common/widgets/show_firebase_error.dart';
-import 'package:tiktok_clone/features/authentication/respository/authentication_repository.dart';
+import 'package:tiktok_clone/features/authentication/repository/authentication_repository.dart';
 
 class LoginViewModel extends AsyncNotifier<void> {
   late AuthenticationRepository _authRepository;

@@ -37,6 +37,8 @@ class VideoPostState extends ConsumerState<VideoPost>
   bool _isPlaying = true;
   late final AnimationController _animationController;
   late bool _isMuted = ref.read(playbackConfigProvider).muted;
+  bool _isLiked = false;
+  late int _numLikes = widget.videoData.likes;
 
   void _onVideoChange() {
     if (_videoPlayerController.value.isInitialized) {
@@ -79,6 +81,10 @@ class VideoPostState extends ConsumerState<VideoPost>
     );
 
     _initVideoPlayer();
+    ref
+        .read(videoPostProvider(widget.videoData.id).notifier)
+        .isLiked()
+        .then((value) => _isLiked = value);
   }
 
   @override
@@ -102,7 +108,10 @@ class VideoPostState extends ConsumerState<VideoPost>
   }
 
   void _onTapLike() {
+    _numLikes = _isLiked ? _numLikes - 1 : _numLikes + 1;
+    _isLiked = !_isLiked;
     ref.watch(videoPostProvider(widget.videoData.id).notifier).likeVideo();
+    setState(() {});
   }
 
   @override
@@ -208,15 +217,16 @@ class VideoPostState extends ConsumerState<VideoPost>
                 radius: 25,
                 foregroundImage: NetworkImage(
                     "https://firebasestorage.googleapis.com/v0/b/clone-tiktok-"
-                    "pleed0215.appspot.com/o/avatars%2F${widget.videoData.creatorUid}?alt=media&sometrick=${DateTime.now()}"),
-                child: Text(widget.videoData.creator),
+                    "pleed0215.appspot.com/o/avatars%2F${widget.videoData.creatorUid}?alt=media"), //&sometrick=${DateTime.now()}"),
+//                child: Text(widget.videoData.creator),
               ),
               Gaps.v24,
               GestureDetector(
                 onTap: _onTapLike,
                 child: VideoButton(
                   icon: FontAwesomeIcons.solidHeart,
-                  text: S.of(context).likeCount(widget.videoData.likes),
+                  color: _isLiked ? Colors.redAccent : Colors.white,
+                  text: S.of(context).likeCount(_numLikes),
                 ),
               ),
               Gaps.v24,

@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tiktok_clone/features/user/view_model/users_view_model.dart';
 import 'package:tiktok_clone/features/videos/models/video_model.dart';
 
-import '../../authentication/respository/authentication_repository.dart';
+import '../../authentication/repository/authentication_repository.dart';
 import '../repository/videos_repository.dart';
 
 class UploadVideoViewModel extends AsyncNotifier<void> {
