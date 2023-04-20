@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/features/videos/models/video_model.dart';
 import 'package:tiktok_clone/features/videos/view_models/playback_config_view_model.dart';
+import 'package:tiktok_clone/features/videos/view_models/video_post_viewmodel.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_comment_modal.dart';
 import 'package:tiktok_clone/generated/l10n.dart';
 import 'package:video_player/video_player.dart';
@@ -100,6 +101,10 @@ class VideoPostState extends ConsumerState<VideoPost>
     });
   }
 
+  void _onTapLike() {
+    ref.watch(videoPostProvider(widget.videoData.id).notifier).likeVideo();
+  }
+
   @override
   Widget build(BuildContext context) {
     return VisibilityDetector(
@@ -118,7 +123,7 @@ class VideoPostState extends ConsumerState<VideoPost>
         }
         if (info.visibleFraction == 0.0 &&
             _videoPlayerController.value.isPlaying) {
-          _toggleVideoState();
+          //_toggleVideoState();
         }
       },
       key: Key("${widget.index}"),
@@ -207,9 +212,12 @@ class VideoPostState extends ConsumerState<VideoPost>
                 child: Text(widget.videoData.creator),
               ),
               Gaps.v24,
-              VideoButton(
-                icon: FontAwesomeIcons.solidHeart,
-                text: S.of(context).likeCount(widget.videoData.likes),
+              GestureDetector(
+                onTap: _onTapLike,
+                child: VideoButton(
+                  icon: FontAwesomeIcons.solidHeart,
+                  text: S.of(context).likeCount(widget.videoData.likes),
+                ),
               ),
               Gaps.v24,
               VideoButton(

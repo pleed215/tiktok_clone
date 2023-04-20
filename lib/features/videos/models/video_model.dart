@@ -8,9 +8,11 @@ class VideoModel {
   int likes;
   int comments;
   int createdAt;
+  String id;
 
   VideoModel(
-      {required this.title,
+      {required this.id,
+      required this.title,
       required this.description,
       required this.fileUrl,
       required this.thumbnailUrl,
@@ -29,10 +31,12 @@ class VideoModel {
         creator = '',
         createdAt = 0,
         likes = 0,
-        comments = 0;
+        comments = 0,
+        id = "";
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'title': title,
       'description': description,
       'fileUrl': fileUrl,
@@ -45,7 +49,7 @@ class VideoModel {
     };
   }
 
-  factory VideoModel.fromMap(Map<String, dynamic> map) {
+  factory VideoModel.fromMap(Map<String, dynamic> map, String id) {
     return VideoModel(
       title: map['title'] as String,
       description: map['description'] as String,
@@ -56,6 +60,7 @@ class VideoModel {
       likes: map['likes'] as int,
       comments: map['comments'] as int,
       createdAt: map['createdAt'] as int,
+      id: id,
     );
   }
 
@@ -71,6 +76,7 @@ class VideoModel {
     int? createdAt,
   }) {
     return VideoModel(
+      id: id,
       title: title ?? this.title,
       description: description ?? this.description,
       fileUrl: fileUrl ?? this.fileUrl,

@@ -12,12 +12,24 @@ class TimelineViewModel extends AsyncNotifier<List<VideoModel>> {
   @override
   FutureOr<List<VideoModel>> build() async {
     _videosRepository = ref.read(videosRepository);
-    final result = await _videosRepository.fetchVideos();
-    final newList =
-        result.docs.map((doc) => VideoModel.fromMap(doc.data())).toList();
-    _list = newList;
-    // throw Exception("Fetching failed");
+    _list = await _fetchVideos();
     return _list;
+  }
+
+  Future<List<VideoModel>> _fetchVideos({int? lastItemCreatedAt}) async {
+    final result = await _videosRepository.fetchVideos(
+        lastItemCreatedAt: lastItemCreatedAt);
+    return result.docs
+        .map(
+          (e) => VideoModel.fromMap(e.data(), e.id),
+        )
+        .toList();
+  }
+
+  fetchNextPage() async {
+    final nextPage =
+        await _fetchVideos(lastItemCreatedAt: _list.last.createdAt);
+    state = AsyncValue.data([..._list, ...nextPage]);
   }
 
   Future<void> uploadVideo() async {
@@ -27,6 +39,13 @@ class TimelineViewModel extends AsyncNotifier<List<VideoModel>> {
     //_list = [..._list, newVideo];
     _list.add(newVideo);
     state = AsyncValue.data(_list);
+  }
+
+  Future<void> refresh() async {
+    state = const AsyncValue.loading();
+    final videos = await _fetchVideos(lastItemCreatedAt: null);
+    _list = videos;
+    state = AsyncValue.data(videos);
   }
 }
 

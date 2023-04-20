@@ -47,7 +47,6 @@ class VideoTimelineScreen extends ConsumerStatefulWidget {
 }
 
 class VideoTimelineScreenState extends ConsumerState<VideoTimelineScreen> {
-  int _currentItemLength = 5;
   final _pageController = PageController();
 
   void _onVideoPlayFinished() {
@@ -62,15 +61,18 @@ class VideoTimelineScreenState extends ConsumerState<VideoTimelineScreen> {
   }
 
   Future<void> _onRefresh() {
-    return Future.delayed(const Duration(seconds: 3));
+    _pageController.jumpToPage(0);
+    return ref.watch(timelineProvider.notifier).refresh();
   }
 
   @override
   Widget build(BuildContext context) {
     return ref.watch(timelineProvider).when(
-          loading: () => const Center(
-            child: CircularProgressIndicator.adaptive(),
-          ),
+          loading: () {
+            return const Center(
+              child: CircularProgressIndicator.adaptive(),
+            );
+          },
           error: (error, stackTrace) => Center(
             child: Text(
               "Could not load videos: $error",
@@ -79,37 +81,39 @@ class VideoTimelineScreenState extends ConsumerState<VideoTimelineScreen> {
               ),
             ),
           ),
-          data: (videos) => RefreshIndicator(
-            displacement: 50,
-            edgeOffset: 10,
-            backgroundColor: Colors.white.withOpacity(0.1),
-            color: Theme.of(context).primaryColor,
-            onRefresh: _onRefresh,
-            child: PageView.builder(
-              controller: _pageController,
-              scrollDirection: Axis.vertical,
-              itemCount: videos.length,
-              onPageChanged: (value) {
-                if (_currentItemLength - value <= 2 && value % 5 == 3) {
-                  _pageController.animateTo(0,
+          data: (videos) {
+            return RefreshIndicator(
+              displacement: 50,
+              edgeOffset: 10,
+              backgroundColor: Colors.white.withOpacity(0.1),
+              color: Theme.of(context).primaryColor,
+              onRefresh: _onRefresh,
+              child: PageView.builder(
+                controller: _pageController,
+                scrollDirection: Axis.vertical,
+                itemCount: videos.length,
+                onPageChanged: (value) {
+                  print("Icalled: $value, ${videos.length}");
+                  _pageController.animateToPage(value,
                       duration: const Duration(
                         milliseconds: 1000,
                       ),
                       curve: Curves.linearToEaseOut);
-                  setState(() {
-                    _currentItemLength += 5;
-                  });
-                }
-              },
-              itemBuilder: (context, index) {
-                final videoData = videos[index];
-                return VideoPost(
-                    videoData: videoData,
-                    onVideoFinished: _onVideoPlayFinished,
-                    index: index);
-              },
-            ),
-          ),
+                  if (value == videos.length - 1) {
+                    ref.watch(timelineProvider.notifier).fetchNextPage();
+                  }
+                },
+                itemBuilder: (context, index) {
+                  final videoData = videos[index];
+                  return VideoPost(
+                      key: Key(videoData.id),
+                      videoData: videoData,
+                      onVideoFinished: _onVideoPlayFinished,
+                      index: index);
+                },
+              ),
+            );
+          },
         );
   }
 }

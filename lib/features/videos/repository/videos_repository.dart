@@ -6,6 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/video_model.dart';
 
+const pageSize = 2;
+
 class VideosRepository {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
@@ -20,11 +22,26 @@ class VideosRepository {
     await _db.collection('videos').add(data.toMap());
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> fetchVideos() {
-    return _db
+  Future<QuerySnapshot<Map<String, dynamic>>> fetchVideos(
+      {int? lastItemCreatedAt}) {
+    final orderedQuery = _db
         .collection('videos')
         .orderBy("createdAt", descending: true)
-        .get();
+        .limit(pageSize);
+    if (lastItemCreatedAt == null) {
+      return orderedQuery.get();
+    }
+    return orderedQuery.startAfter([lastItemCreatedAt]).get();
+  }
+
+  Future<void> likeVideo(String videoId, String userId) async {
+    final query = _db.collection('likes').doc("${videoId}000$userId");
+    final doc = await query.get();
+    if (!doc.exists) {
+      await query.set({"createdAt": DateTime.now().millisecondsSinceEpoch});
+    } else {
+      await query.delete();
+    }
   }
 }
 
