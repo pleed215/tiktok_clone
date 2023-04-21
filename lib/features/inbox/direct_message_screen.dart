@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/inbox/chat_screen.dart';
+import 'package:tiktok_clone/features/inbox/view_models/chatrooms_view_model.dart';
 
-class DirectMessageScreen extends StatefulWidget {
+class DirectMessageScreen extends ConsumerStatefulWidget {
   const DirectMessageScreen({
     Key? key,
   }) : super(key: key);
@@ -12,10 +14,11 @@ class DirectMessageScreen extends StatefulWidget {
   static String routeUrl = "/chats";
 
   @override
-  State<DirectMessageScreen> createState() => _DirectMessageScreenState();
+  ConsumerState<DirectMessageScreen> createState() =>
+      _DirectMessageScreenState();
 }
 
-class _DirectMessageScreenState extends State<DirectMessageScreen> {
+class _DirectMessageScreenState extends ConsumerState<DirectMessageScreen> {
   final _key = GlobalKey<AnimatedListState>();
   final _duration = const Duration(milliseconds: 300);
 
@@ -90,7 +93,6 @@ class _DirectMessageScreenState extends State<DirectMessageScreen> {
                   context.pushNamed(ChatScreen.routeName, params: {
                     'id': '1',
                   });
-                  context.push('1');
                   // Navigator.of(context).push(MaterialPageRoute(
                   //   builder: (context) => const ChatScreen(),
                   // ));

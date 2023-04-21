@@ -93,7 +93,6 @@ class VideoTimelineScreenState extends ConsumerState<VideoTimelineScreen> {
                 scrollDirection: Axis.vertical,
                 itemCount: videos.length,
                 onPageChanged: (value) {
-                  print("Icalled: $value, ${videos.length}");
                   _pageController.animateToPage(value,
                       duration: const Duration(
                         milliseconds: 1000,

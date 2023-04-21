@@ -83,6 +83,7 @@ final routerProvider = Provider((ref) {
             name: ChatScreen.routeName,
             builder: (context, state) {
               final id = state.params['id']!;
+              print(id.toString());
               return ChatScreen(chatId: id);
             },
           ),

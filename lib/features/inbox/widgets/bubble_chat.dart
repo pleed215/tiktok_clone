@@ -56,8 +56,8 @@ class _BubbleChatState extends State<BubbleChat> {
 
   @override
   void initState() {
-    widget.textEditingController.addListener(_onChange);
     super.initState();
+    widget.textEditingController.addListener(_onChange);
   }
 
   @override
