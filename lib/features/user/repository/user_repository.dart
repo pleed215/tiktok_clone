@@ -34,6 +34,18 @@ class UserRepository {
   Future<void> updateUser(String uid, Map<String, dynamic> update) async {
     await _db.collection('users').doc(uid).update(update);
   }
+
+  Future<List<UserProfileModel>> getUserLists(String authUserId) async {
+    final usersExceptAuthUser = await _db
+        .collection('users')
+        .where("uid", isNotEqualTo: authUserId)
+        .orderBy('uid')
+        .orderBy('name')
+        .get();
+    return usersExceptAuthUser.docs
+        .map((doc) => UserProfileModel.fromMap(doc.data()))
+        .toList();
+  }
 }
 
 final userRepository = Provider(

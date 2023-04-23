@@ -7,7 +7,6 @@ import 'package:tiktok_clone/features/authentication/repository/authentication_r
 import 'package:tiktok_clone/features/inbox/activity_screen.dart';
 import 'package:tiktok_clone/features/inbox/direct_message_screen.dart';
 import 'package:tiktok_clone/features/inbox/view_models/chatrooms_view_model.dart';
-import 'package:tiktok_clone/features/user/repository/user_repository.dart';
 
 import 'chat_screen.dart';
 
@@ -22,6 +21,7 @@ class InboxScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final authUser = ref.read(authRepo).user;
     return Scaffold(
         appBar: AppBar(
           elevation: 1,
@@ -86,16 +86,15 @@ class InboxScreen extends ConsumerWidget {
             ),
           ),
           Expanded(
-            child: ref.watch(chatRoomProvider).when(
+            child: ref.watch(chatRoomStream(authUser!.uid)).when(
                 data: (chatRooms) {
                   return ListView.builder(
                     itemBuilder: (context, index) {
-                      final userId = ref.read(authRepo).user!.uid;
-                      final chatWith = chatRooms[index].getChatWithName(userId);
+                      final chatWith = chatRooms[index].partnerName;
                       return GestureDetector(
                         onTap: () {
                           context.pushNamed(ChatScreen.routeName, params: {
-                            'id': chatRooms[index].id,
+                            'id': chatRooms[index].chatRoomId,
                           });
                         },
                         child: ListTile(

@@ -16,6 +16,15 @@ class MessageRepository {
         .collection('messages')
         .add(message.toMap());
   }
+
+  Future<void> makeDeleted(String chatRoomId, String messageId) async {
+    await _db
+        .collection("chat_rooms")
+        .doc(chatRoomId)
+        .collection("messages")
+        .doc(messageId)
+        .update({"text": "[deleted message]"});
+  }
 }
 
 final messageRepository = Provider(

@@ -1,55 +1,60 @@
 class ChatRoomModel {
-  final String id;
-  final List<String> userIds;
+  String chatRoomId;
+  String partnerId;
+  String partnerName;
 
-  const ChatRoomModel({
-    required this.id,
-    required this.userIds,
-  });
+//<editor-fold desc="Data Methods">
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ChatRoomModel &&
+          runtimeType == other.runtimeType &&
+          chatRoomId == other.chatRoomId &&
+          partnerId == other.partnerId &&
+          partnerName == other.partnerName);
+
+  @override
+  int get hashCode =>
+      chatRoomId.hashCode ^ partnerId.hashCode ^ partnerName.hashCode;
+
+  @override
+  String toString() {
+    return 'ChatRoomModel{ roomId: $chatRoomId, partnerId: $partnerId, partnerName: $partnerName,}';
+  }
 
   ChatRoomModel copyWith({
-    String? id,
-    List<String>? userIds,
+    String? roomId,
+    String? partnerId,
+    String? partnerName,
   }) {
     return ChatRoomModel(
-      id: id ?? this.id,
-      userIds: userIds ?? this.userIds,
+      chatRoomId: roomId ?? chatRoomId,
+      partnerId: partnerId ?? this.partnerId,
+      partnerName: partnerName ?? this.partnerName,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
-      'userIds': userIds,
+      'chatRoomId': chatRoomId,
+      'partnerId': partnerId,
+      'partnerName': partnerName,
     };
   }
 
   factory ChatRoomModel.fromMap(Map<String, dynamic> map) {
     return ChatRoomModel(
-      id: map['id'] as String,
-      userIds: map['userIds'] as List<String>,
+      chatRoomId: map['chatRoomId'] as String,
+      partnerId: map['partnerId'] as String,
+      partnerName: map['partnerName'] as String,
     );
   }
 
-  List<String> getUserIds() {
-    return userIds.map((idName) => idName.split("___")[0]).toList();
-  }
-
-  List<String> getUserNames() {
-    return userIds.map((idName) => idName.split("___")[1]).toList();
-  }
-
-  String getChatWithId(String myId) {
-    return userIds
-        .firstWhere((element) => !element.startsWith(myId))
-        .split("___")[0];
-  }
-
-  String getChatWithName(String myId) {
-    print(myId);
-    print(userIds);
-    return userIds
-        .firstWhere((element) => !element.startsWith(myId))
-        .split("___")[1];
-  }
+  ChatRoomModel({
+    required this.chatRoomId,
+    required this.partnerId,
+    required this.partnerName,
+  });
+//</editor-fold>
 }

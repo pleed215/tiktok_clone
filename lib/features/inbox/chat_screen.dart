@@ -1,7 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/repository/authentication_repository.dart';
@@ -139,8 +140,47 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                         ),
                         itemBuilder: (context, index) {
                           final isMine = _userId == data[index].userId;
-                          return ChatWidget(
-                            message: ChatMessage(data[index].text, isMine),
+                          return GestureDetector(
+                            onLongPress: () {
+                              showCupertinoDialog(
+                                context: context,
+                                builder: (context) => CupertinoAlertDialog(
+                                  title: const Text(
+                                      "Sure to delete this message?"),
+                                  content: Text(data[index].text),
+                                  actions: [
+                                    CupertinoDialogAction(
+                                      isDefaultAction: true,
+                                      isDestructiveAction: true,
+                                      onPressed: () async {
+                                        if (isMine &&
+                                            data[index].text !=
+                                                "[deleted message]") {
+                                          await ref
+                                              .read(messageSendProvider(
+                                                      widget.chatId)
+                                                  .notifier)
+                                              .deleteMessage(data[index].id);
+                                          if (mounted) {
+                                            context.pop();
+                                          }
+                                        }
+                                      },
+                                      child: const Text("Yes"),
+                                    ),
+                                    CupertinoDialogAction(
+                                      child: const Text("No"),
+                                      onPressed: () {
+                                        context.pop();
+                                      },
+                                    )
+                                  ],
+                                ),
+                              );
+                            },
+                            child: ChatWidget(
+                              message: ChatMessage(data[index].text, isMine),
+                            ),
                           );
                         },
                         separatorBuilder: (context, index) => Gaps.v10,

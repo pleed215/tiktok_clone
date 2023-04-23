@@ -24,6 +24,10 @@ class MessageViewModel extends FamilyAsyncNotifier<void, String> {
       _messageRepository.sendMessage(message, _chatRoomId);
     });
   }
+
+  Future<void> deleteMessage(String messageId) async {
+    await _messageRepository.makeDeleted(_chatRoomId, messageId);
+  }
 }
 
 final messageSendProvider =
@@ -39,7 +43,8 @@ final messageStreamProvider = StreamProvider.autoDispose
       .orderBy("createdAt")
       .snapshots()
       .map(
-        (event) =>
-            event.docs.map((e) => MessageModel.fromMap(e.data())).toList(),
+        (event) => event.docs
+            .map((e) => MessageModel.fromMap(e.data(), e.id))
+            .toList(),
       );
 });
